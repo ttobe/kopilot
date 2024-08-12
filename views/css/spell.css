@@ -27,17 +27,6 @@
     box-shadow 0.3s ease;
 }
 
-#suggestion-edit:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0.5rem var(--primary-color);
-  outline: none;
-}
-
-#suggestion-edit.wrong {
-  border-color: red;
-  box-shadow: 0 0 0.5rem red;
-}
-
 #error-count {
   color: red;
   text-align: right;

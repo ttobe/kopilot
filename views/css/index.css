@@ -96,6 +96,18 @@ input[type='number' i].wrong {
   box-shadow: 0 0 0.5rem red;
 }
 
+input[type='text']:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0.5rem var(--primary-color);
+  outline: none;
+}
+
+input.wrong,
+input.wrong:focus {
+  border-color: red;
+  box-shadow: 0 0 0.5rem red;
+}
+
 header {
   height: 4rem;
   padding: 0 0.5rem;
