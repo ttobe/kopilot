@@ -24,6 +24,6 @@
   display: none;
 }
 
-.radio-btn-group {
+#output-btn-group .radio-btn-group {
   justify-content: center;
 }
