@@ -24,7 +24,7 @@ export class RepetitiveWord {
   }
 
   setRepeativeBtnEvent = async (event, mode) => {
-    const text = document.getElementById('textarea').value;
+    const text = this.#textarea.value;
 
     switch (mode) {
       case this.#REPEATIVE_BTN_OPTION:
@@ -68,9 +68,7 @@ export class RepetitiveWord {
   };
 
   showWord(result) {
-    const output = document.getElementById('output');
-    const textarea = document.getElementById('textarea');
-    let content = output.innerHTML;
+    let content = this.#output.innerHTML;
 
     result.forEach((word) => {
       const regex = new RegExp(`(${word})`, 'g');
@@ -79,7 +77,7 @@ export class RepetitiveWord {
         `<span class="highlight green">${word}</span>`,
       );
     });
-    output.innerHTML = content;
+    this.#output.innerHTML = content;
 
     document.querySelectorAll('.highlight.green').forEach((element) => {
       element.addEventListener('click', async (event) => {
