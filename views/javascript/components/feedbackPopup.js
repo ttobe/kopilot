@@ -6,6 +6,13 @@ export class FeedbackPopup extends BasePopup {
   #radioBtnGroups;
   #feedbackContent;
 
+  #scoreFeedbackMap = {
+    A: '훌륭해요!',
+    B: '아주 잘했어요!',
+    C: '조금만 더 노력해봐요!',
+    D: '발전 가능성이 커요!',
+    F: '차근차근 개선해봐요!',
+  };
   constructor(holder, overlay) {
     super(holder, overlay);
 
@@ -69,9 +76,10 @@ export class FeedbackPopup extends BasePopup {
   #createSection(item) {
     const { title, score, description } = item;
     const section = document.createElement('div');
+    const feedback = this.#scoreFeedbackMap[score] || score;
     section.className = 'section';
     section.innerHTML = `
-      <h3>${title}: <span class="score">${score}</span></h3>
+      <h3>${title}: <span class="score">${feedback}</span></h3>
       <p>${description}</p>
     `;
     return section;
