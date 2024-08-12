@@ -7,31 +7,43 @@ export class RepetitiveWord {
   #clickedElemtnt;
   #textarea;
   #output;
+  #REPEATIVE_BTN_OPTION;
+  #APPLY_BTN_OPTION;
 
   constructor() {
     this.#popup = new RepetitiveWordPopup();
     this.#btn = document.getElementById('repeative-btn');
     this.#textarea = document.getElementById('textarea');
     this.#output = document.getElementById('output');
+    this.#REPEATIVE_BTN_OPTION = '반복되는 단어';
+    this.#APPLY_BTN_OPTION = '반영하기';
 
-    const repetitiveBtn = document.getElementById('repeative-btn');
-    repetitiveBtn.addEventListener('click', async (event) =>
-      this.setPopup(event),
+    this.#btn.addEventListener('click', async (event) =>
+      this.setRepeativeBtnEvent(event, this.#btn.innerText),
     );
   }
 
-  setPopup = async (event) => {
+  setRepeativeBtnEvent = async (event, mode) => {
     const text = document.getElementById('textarea').value;
 
-    if (text.length < 200) {
-      this.#popup.denyPopup();
-      return;
+    switch (mode) {
+      case this.#REPEATIVE_BTN_OPTION:
+        if (text.length < 200) {
+          this.#popup.denyPopup();
+          return;
+        }
+        this.#popup.showLoading(event);
+        const words = await this.getRepetitiveWord(text);
+        this.#popup.showPopup(words, (words) => {
+          this.showWord(words);
+        });
+        this.#btn.innerText = this.#APPLY_BTN_OPTION;
+        break;
+
+      case this.#APPLY_BTN_OPTION:
+        this.#textarea.value = this.#output.innerText;
+        this.#btn.innerText = this.#REPEATIVE_BTN_OPTION;
     }
-    this.#popup.showLoading(event);
-    const words = await this.getRepetitiveWord(text);
-    this.#popup.showPopup(words, (words) => {
-      this.showWord(words);
-    });
   };
 
   getRepetitiveWord = async (sentence) => {
@@ -76,7 +88,6 @@ export class RepetitiveWord {
         this.#popup.showNewWord(data, this.updateSelectedValue);
       });
     });
-    this.#btn.innerText = '반영하기';
   }
 
   getWords = async (event) => {
