@@ -43,11 +43,11 @@ export class RepetitiveWordPopup {
     this.#popup.hideApplyButton();
   }
 
-  getSelectedWord = () => {
+  getSelectedWord() {
     return this.#radioBtn.getSelectedBtn();
-  };
+  }
 
-  showNewWord = (data, func) => {
+  showNewWord(data, func) {
     const holder = this.#popup.holder.querySelector('.radio-btn-group');
     this.#radioBtn = new RadioBtnGroup(holder);
     this.#radioBtn.addButtons(data.result, 'repetitive');
@@ -58,5 +58,5 @@ export class RepetitiveWordPopup {
     });
     this.#popup.showButton();
     this.#popup.show();
-  };
+  }
 }
