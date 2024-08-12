@@ -107,7 +107,7 @@ class VersionStorage {
     );
   }
 
-  async saveContent(content) {
+  async #saveContent(content) {
     try {
       const transaction = this.#db.transaction([this.#STORE_NAME], 'readwrite');
       const objectStore = transaction.objectStore(this.#STORE_NAME);
@@ -177,6 +177,14 @@ class VersionStorage {
     this.#storagePopup.style.display = 'block';
   }
 
+  async saveAndPopup() {
+    const isSaved = await this.#saveContent(this.#textarea.value);
+
+    const message = isSaved ? '내용이 저장되었습니다.' : '저장되지 않았습니다.';
+
+    this.#alertPopup.pop(message);
+  }
+
   #drawVersion(version) {
     const listItem = document.createElement('li');
     listItem.textContent = this.#formatTimestamp(version.timestamp);
@@ -204,6 +212,10 @@ class VersionStorage {
           this.#storagePopup.style.display = 'none';
         }
       });
+
+    document.getElementById('save-button').addEventListener('click', () => {
+      this.saveAndPopup();
+    });
 
     document.getElementById('cancel-button').addEventListener('click', () => {
       this.#storagePopup.style.display = 'none';

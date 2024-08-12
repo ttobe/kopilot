@@ -77,7 +77,7 @@ export class Textarea extends BaseComponent {
 
     if (event.ctrlKey && event.key === 's') {
       event.preventDefault();
-      this.#handleCtrlS();
+      await versionStorage.saveAndPopup();
       return;
     }
 
@@ -119,14 +119,6 @@ export class Textarea extends BaseComponent {
     const selectedText = this.holder.value.substring(start, end);
 
     this.#writingTool.show(selectedText, start, end);
-  }
-
-  async #handleCtrlS() {
-    const isSaved = await versionStorage.saveContent(this.holder.value);
-
-    const message = isSaved ? '내용이 저장되었습니다.' : '저장되지 않았습니다.';
-
-    this.#alertPopup.pop(message);
   }
 
   #handleBackspace() {
