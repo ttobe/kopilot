@@ -47,7 +47,7 @@ export class RepetitiveWord {
   };
 
   getRepetitiveWord = async (sentence) => {
-    const url = 'http://localhost:3000/clova/repeated-word';
+    const url = `${window.kopilotConfig.API_BASE_URL}/clova/repeated-word`;
     const data = {
       text: sentence,
     };
