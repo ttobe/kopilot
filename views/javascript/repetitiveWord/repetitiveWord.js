@@ -32,7 +32,7 @@ export class RepetitiveWord {
           this.#popup.denyPopup();
           return;
         }
-        this.#popup.showLoading(event);
+        this.#popup.showLoading(event, '반복되는 단어를 탐지 중입니다...');
         const words = await this.getRepetitiveWord(text);
         this.#popup.showPopup(words, (words) => {
           this.showWord(words);
@@ -83,6 +83,7 @@ export class RepetitiveWord {
 
     document.querySelectorAll('.highlight.green').forEach((element) => {
       element.addEventListener('click', async (event) => {
+        this.#popup.showLoading(event, '대체어를 불러오는 중입니다...');
         this.#clickedElemtnt = event.target;
         const data = await this.getWords(event);
         this.#popup.showNewWord(data, this.updateSelectedValue);

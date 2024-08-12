@@ -9,11 +9,11 @@ export class RepetitiveWordPopup {
     this.#popup = new OutputPopup();
   }
 
-  showLoading(event) {
+  showLoading(event, text) {
     event.stopPropagation(); // 이벤트 전파 막기
 
     this.#popup.set(
-      '반복되는 단어를 탐지 중입니다...',
+      text,
       `
     <div class="spinner-wrap">
       <div class="spinner">
@@ -56,6 +56,7 @@ export class RepetitiveWordPopup {
       func(this.#radioBtn.getSelectedBtn());
       this.#popup.hide();
     });
+    this.#popup.showButton();
     this.#popup.show();
   };
 }
