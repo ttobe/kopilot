@@ -1,8 +1,8 @@
 ﻿import { OutputPopup } from '../components/outputPopup.js';
 import { spellCheck } from './spellCheck.js';
 
-const sameTitle = `교정된 결과가 맞는지 확인해주세요.<br>직접 수정할 수 있어요!`;
-const diffTitle = `교정된 결과가 없어요.<br>직접 수정해주세요!`;
+const diffTitle = `교정된 결과가 맞는지 확인해주세요.<br>직접 수정할 수 있어요!`;
+const sameTitle = `교정된 결과가 없는 입력입니다.<br>직접 수정해주세요!`;
 
 export function showSuggestion(event, element, idx) {
   event.stopPropagation(); // 이벤트 전파 막기
