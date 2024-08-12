@@ -32,5 +32,5 @@ export const ClovaChatCompletionsRequestHeadersForRepetitiveWord: ClovaRequestHe
   {
     ...ClovaRequestHeaders,
     'X-NCP-CLOVASTUDIO-REQUEST-ID':
-      process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_REPETITIVE_WORD,
+      process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS,
   };

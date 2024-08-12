@@ -7,16 +7,14 @@ export class RepetitiveWord {
   #clickedElement;
   #textarea;
   #output;
-  #REPEATIVE_BTN_OPTION;
-  #APPLY_BTN_OPTION;
+  #REPEATIVE_BTN_OPTION = '반복되는 단어';
+  #APPLY_BTN_OPTION = '반영하기';
 
   constructor() {
     this.#popup = new RepetitiveWordPopup();
     this.#btn = document.getElementById('repeative-btn');
     this.#textarea = document.getElementById('textarea');
     this.#output = document.getElementById('output');
-    this.#REPEATIVE_BTN_OPTION = '반복되는 단어';
-    this.#APPLY_BTN_OPTION = '반영하기';
 
     this.#btn.addEventListener('click', async (event) =>
       this.setRepeativeBtnEvent(event, this.#btn.innerText),
@@ -69,28 +67,25 @@ export class RepetitiveWord {
 
   showWord(result) {
     let content = this.#output.innerHTML;
-
-    result.forEach((word) => {
+    content = result.reduce((acc, word) => {
       const regex = new RegExp(`(${word})`, 'g');
-      content = content.replace(
-        regex,
-        `<span class="highlight green">${word}</span>`,
-      );
-    });
+      return acc.replace(regex, `<span class="highlight green">${word}</span>`);
+    }, content);
+
     this.#output.innerHTML = content;
 
-    document.querySelectorAll('.highlight.green').forEach((element) => {
+    this.#output.querySelectorAll('.highlight.green').forEach((element) => {
       element.addEventListener('click', async (event) => {
         this.#popup.showLoading(event, '대체어를 불러오는 중입니다...');
         this.#clickedElement = event.target;
-        const data = await this.getWords(event);
+        const data = await this.getWords(event.target);
         this.#popup.showNewWord(data, this.updateSelectedValue);
       });
     });
   }
 
-  getWords = async (event) => {
-    const clickedElement = event.target;
+  getWords = async (target) => {
+    const clickedElement = target;
     const word = clickedElement.innerText;
 
     const url = 'http://localhost:3000/clova/partial-modification';

@@ -38,7 +38,11 @@ export class RepetitiveWordPopup {
   }
 
   denyPopup() {
-    this.#popup.set('글이 너무 짧습니다.', '글을 조금 더 입력해주세요.', null);
+    this.#popup.set(
+      '글이 너무 짧습니다.',
+      '글을 200자 이상 입력해주세요.',
+      null,
+    );
     this.#popup.show();
     this.#popup.hideApplyButton();
   }
