@@ -16,11 +16,11 @@ export class Textarea extends BaseComponent {
   #charCount;
   #byteCount;
 
-  #autoCompleteSettings;
+  #autoCompletion;
   #nextCursorPointer;
   #longSentence;
 
-  constructor(holder, autoCompleteSettings, writingTool) {
+  constructor(holder, autoCompletion, writingTool) {
     super(holder);
 
     this.#output = document.getElementById('output');
@@ -30,14 +30,22 @@ export class Textarea extends BaseComponent {
       document.getElementById('main-alert-popup'),
     );
 
-    this.#autoCompleteSettings = autoCompleteSettings;
+    this.#autoCompletion = autoCompletion;
     this.#writingTool = writingTool;
     this.#longSentence = LongSentence.getInstance();
     this.#init();
   }
 
   changeEndingType(key) {
-    this.#autoCompleteSettings.setEndingType(key);
+    this.#autoCompletion.setEndingType(key);
+  }
+
+  static isCursorMoved(code, key) {
+    return (
+      (code === KEY.SPACE && key !== 'Process') ||
+      code === KEY.ENTER ||
+      KeyChecker.isArrowKeyEvent(code)
+    );
   }
 
   static isAutoCompletePosition(currPointer, autoPointer) {
@@ -58,7 +66,6 @@ export class Textarea extends BaseComponent {
     this.#update();
   }
 
-
   async handleKeydownEvent(event) {
     if (this.#writingTool.isOn()) {
       this.#writingTool.hide();
@@ -70,63 +77,39 @@ export class Textarea extends BaseComponent {
 
     if (event.ctrlKey && event.key === 's') {
       event.preventDefault();
-      const isSaved = await versionStorage.saveContent(this.holder.value);
-
-      const message = isSaved
-        ? '내용이 저장되었습니다.'
-        : '저장되지 않았습니다.';
-
-      this.#alertPopup.pop(message);
+      this.#handleCtrlS();
+      return;
     }
 
     const cursorPointer = this.#getCursorPointer();
-    const autoPointer = this.#autoCompleteSettings.getPointer();
+    const autoPointer = this.#autoCompletion.getPointer();
 
     if (KeyChecker.isSentenceTerminated(key)) {
       spellCheck.spellCheckOnPunctuation();
     }
 
     if (!Textarea.isAutoCompletePosition(cursorPointer, autoPointer)) {
-      this.#autoCompleteSettings.emptyCursorBox();
+      this.#autoCompletion.emptyCursorBox();
     }
 
     if (code === KEY.BACKSPACE) {
-      this.handleBackspace();
+      this.#handleBackspace();
       return;
     }
-    if (
-      (code === KEY.SPACE && key !== 'Process') ||
-      code === KEY.ENTER ||
-      KeyChecker.isArrowKeyEvent(code)
-    ) {
-      this.#autoCompleteSettings.emptyAll();
+
+    if (Textarea.isCursorMoved(code, key)) {
+      this.#autoCompletion.emptyAll();
       return;
     }
 
     if (code === KEY.TAB) {
       event.preventDefault();
-      this.#autoComplete(cursorPointer, autoPointer);
+      this.#handleAutoComplete(cursorPointer, autoPointer);
       return;
     }
   }
 
-  handleCompositionstartEvent() {
-    this.#autoCompleteSettings.emptyChar();
-  }
-
-  handleCompositionupdateEvent(event) {
-    this.#autoCompleteSettings.updateChar(event.data);
-  }
-
-  handleCompositionendEvent(event) {
-    this.#autoCompleteSettings.updateWord(event.data);
-
-    if (this.#autoCompleteSettings.hasEnding()) {
-      this.#autoCompleteSettings.showCursorBox(this.#getCursorPointer());
-    }
-  }
-
-  handleMouseupEvent() {
+  handleSelectionChangeEvent() {
     const start = this.holder.selectionStart;
     const end = this.holder.selectionEnd;
     if (start === end) {
@@ -138,12 +121,38 @@ export class Textarea extends BaseComponent {
     this.#writingTool.show(selectedText, start, end);
   }
 
-  handleBackspace() {
-    if (this.#autoCompleteSettings.hasChar()) {
-      this.#autoCompleteSettings.backspaceChar();
+  async #handleCtrlS() {
+    const isSaved = await versionStorage.saveContent(this.holder.value);
+
+    const message = isSaved ? '내용이 저장되었습니다.' : '저장되지 않았습니다.';
+
+    this.#alertPopup.pop(message);
+  }
+
+  #handleBackspace() {
+    if (this.#autoCompletion.hasChar()) {
+      this.#autoCompletion.backspaceChar();
       return;
     }
-    this.#autoCompleteSettings.backspaceWord();
+    this.#autoCompletion.backspaceWord();
+  }
+
+  #handleAutoComplete(cursorPointer, autoPointer) {
+    const ending = this.#autoCompletion.getEnding();
+    if (!ending) {
+      return;
+    }
+
+    const scrollTop = this.holder.scrollTop;
+    if (cursorPointer === autoPointer + 1) {
+      this.#removeIncompleteCharacter(autoPointer);
+    }
+    this.#insertPhrase(autoPointer, ending);
+    this.#autoCompletion.emptyAll();
+    this.#setNextCursorPointer(autoPointer, ending);
+
+    this.holder.scrollTop = scrollTop;
+    return;
   }
 
   #update() {
@@ -161,24 +170,6 @@ export class Textarea extends BaseComponent {
 
   #getCursorPointer() {
     return this.holder.selectionStart;
-  }
-
-  #autoComplete(cursorPointer, autoPointer) {
-    const ending = this.#autoCompleteSettings.getEnding();
-    if (!ending) {
-      return;
-    }
-
-    const scrollTop = this.holder.scrollTop;
-    if (cursorPointer === autoPointer + 1) {
-      this.#removeIncompleteCharacter(autoPointer);
-    }
-    this.#insertPhrase(autoPointer, ending);
-    this.#autoCompleteSettings.emptyAll();
-    this.#setNextCursorPointer(autoPointer, ending);
-
-    this.holder.scrollTop = scrollTop;
-    return;
   }
 
   #insertPhrase(pointer, phrase) {
@@ -217,31 +208,32 @@ export class Textarea extends BaseComponent {
 
   #bindEvent() {
     this.handleKeydownEvent = this.handleKeydownEvent.bind(this);
-    this.handleCompositionstartEvent =
-      this.handleCompositionstartEvent.bind(this);
-    this.handleCompositionupdateEvent =
-      this.handleCompositionupdateEvent.bind(this);
-    this.handleCompositionendEvent = this.handleCompositionendEvent.bind(this);
     this.handleInputEvent = this.handleInputEvent.bind(this);
-    this.handleMouseupEvent = this.handleMouseupEvent.bind(this);
+    this.handleSelectionChangeEvent =
+      this.handleSelectionChangeEvent.bind(this);
   }
 
   #addEventListener() {
+    this.holder.addEventListener('compositionstart', () =>
+      this.#autoCompletion.emptyChar(),
+    );
+    this.holder.addEventListener('compositionupdate', (event) =>
+      this.#autoCompletion.updateChar(event.data),
+    );
+    this.holder.addEventListener('compositionend', (event) => {
+      this.#autoCompletion.updateWord(event.data);
+
+      if (this.#autoCompletion.hasEnding()) {
+        this.#autoCompletion.showCursorBox(this.#getCursorPointer());
+      }
+    });
+
     this.holder.addEventListener('keydown', this.handleKeydownEvent);
-    this.holder.addEventListener(
-      'compositionstart',
-      this.handleCompositionstartEvent,
-    );
-    this.holder.addEventListener(
-      'compositionupdate',
-      this.handleCompositionupdateEvent,
-    );
-    this.holder.addEventListener(
-      'compositionend',
-      this.handleCompositionendEvent,
-    );
     this.holder.addEventListener('input', this.handleInputEvent);
-    this.holder.addEventListener('mouseup', this.handleMouseupEvent);
+    this.holder.addEventListener(
+      'selectionchange',
+      this.handleSelectionChangeEvent,
+    );
   }
 
   #observeValueChange() {
