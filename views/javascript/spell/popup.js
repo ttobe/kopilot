@@ -1,17 +1,21 @@
 ﻿import { OutputPopup } from '../components/outputPopup.js';
 import { spellCheck } from './spellCheck.js';
 
-/**
- * 색칠된 것 클릭 이벤트 추가
- * @param element 어떤 div인지
- * @param suggestions 제안
- * @param info 정보
- */
+const sameTitle = `교정된 결과가 맞는지 확인해주세요.<br>직접 수정할 수 있어요!`;
+const diffTitle = `교정된 결과가 없어요.<br>직접 수정해주세요!`;
+
 export function showSuggestion(event, element, idx) {
   event.stopPropagation(); // 이벤트 전파 막기
+  if (element.innerText === element.getAttribute('data-suggestions')) {
+    showPopup(sameTitle, element, idx);
+  } else {
+    showPopup(diffTitle, element, idx);
+  }
+}
 
+function showPopup(title, element, idx) {
   const outputPopup = new OutputPopup(
-    `교정된 결과가 맞는지 확인해주세요.<br>직접 수정할 수 있어요!`,
+    title,
     `
       <div class="suggestion-edit-container">
         <div class="suggestion-edit-instructions">${element.innerText}</div>
@@ -26,7 +30,6 @@ export function showSuggestion(event, element, idx) {
       textarea.value = output.innerText;
       spellCheck.removeErrorByIndex(idx);
       outputPopup.hide();
-      textarea.focus(); // 커서를 textarea로 이동
     },
   );
 
