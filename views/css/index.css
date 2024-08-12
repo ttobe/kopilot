@@ -199,7 +199,7 @@ span.em {
   transition: background-color 0.3s;
 }
 
-#save-button {
+#save-button > img {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -283,6 +283,16 @@ span.em {
 }
 
 #feedback-floating-btn:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+#save-button .tooltip {
+  font-size: var(--font-size--x-small);
+  font-weight: 500;
+}
+
+#save-button:hover .tooltip {
   visibility: visible;
   opacity: 1;
 }

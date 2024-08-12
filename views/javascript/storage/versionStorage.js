@@ -142,7 +142,7 @@ class VersionStorage {
   #startAutoSave() {
     this.intervalId = setInterval(async () => {
       const content = this.#textarea.value;
-      await this.saveContent(content);
+      await this.#saveContent(content);
     }, this.#SAVE_INTERNAL);
   }
 
