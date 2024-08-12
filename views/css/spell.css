@@ -17,7 +17,7 @@
   font-size: var(--font-size--medium);
 }
 
-.suggestion-edit {
+#suggestion-edit {
   padding: 0.5rem;
   border: var(--border-size--thin) solid #ccc;
   border-radius: var(--border-radius--medium);
@@ -25,12 +25,6 @@
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
-}
-
-.suggestion-edit:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0.5rem var(--primary-color);
-  outline: none;
 }
 
 #error-count {

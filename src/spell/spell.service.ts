@@ -5,14 +5,30 @@ import { Injectable } from '@nestjs/common';
 export class SpellService {
   async check(sentence: string): Promise<SpellCheckResult[]> {
     try {
-      // 텍스트를 1000자 이하로 나누기
       const chunks = this.splitText(sentence.replace(/<br>/g, '\n'), 1000);
       let results: SpellCheckResult[] = [];
 
-      // 각 청크에 대해 맞춤법 검사
       for (const chunk of chunks) {
-        const result = await this.spellCheckAndReturn(chunk, 6000);
-        results = results.concat(result as SpellCheckResult[]);
+        let retryCount = 0;
+        const maxRetries = 3;
+        let success = false;
+
+        while (!success && retryCount < maxRetries) {
+          try {
+            const result = await this.spellCheckAndReturn(chunk, 6000);
+            results = results.concat(result as SpellCheckResult[]);
+            success = true;
+          } catch (error) {
+            retryCount++;
+            if (retryCount >= maxRetries) {
+              // TODO: 적절한 로그 출력 또는 오류 처리 로직 추가
+              console.error(`Failed after ${maxRetries} attempts:`, error);
+            } else {
+              console.warn(`Retrying... Attempt ${retryCount}`);
+              await this.delay(1000); // 잠시 대기 후 재시도
+            }
+          }
+        }
       }
 
       return results;
@@ -20,6 +36,11 @@ export class SpellService {
       console.error('Error during spell check:', error); // TODO: 로그 출력으로 변경하기
       return [];
     }
+  }
+
+  // 딜레이 함수
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   // 텍스트를 최대 청크 크기로 나누는 함수
