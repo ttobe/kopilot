@@ -21,6 +21,6 @@ export class OutputPopup extends BasePopup {
   }
 
   hideApplyButton() {
-    DomManager.hideElement(this.#applyBtn);
+    DomManager.hideElement(this.okBtn);
   }
 }
