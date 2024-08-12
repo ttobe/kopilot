@@ -7,11 +7,10 @@ export class FeedbackPopup extends BasePopup {
   #feedbackContent;
 
   #scoreFeedbackMap = {
-    A: '훌륭해요!',
-    B: '아주 잘했어요!',
-    C: '조금만 더 노력해봐요!',
-    D: '발전 가능성이 커요!',
-    F: '차근차근 개선해봐요!',
+    A: '완벽해요!',
+    B: '훌륭해요!',
+    C: '잘했어요!',
+    D: '조금 더 노력해봐요!',
   };
   constructor(holder, overlay) {
     super(holder, overlay);
