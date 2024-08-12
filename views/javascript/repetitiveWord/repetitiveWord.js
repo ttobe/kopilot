@@ -3,10 +3,18 @@ import { RepetitiveWordPopup } from './popup.js';
 
 export class RepetitiveWord {
   #popup;
+  #btn;
   #clickedElemtnt;
+  #textarea;
+  #output;
+
   constructor() {
-    const repetitiveBtn = document.getElementById('repeative-btn');
     this.#popup = new RepetitiveWordPopup();
+    this.#btn = document.getElementById('repeative-btn');
+    this.#textarea = document.getElementById('textarea');
+    this.#output = document.getElementById('output');
+
+    const repetitiveBtn = document.getElementById('repeative-btn');
     repetitiveBtn.addEventListener('click', async (event) =>
       this.setPopup(event),
     );
@@ -45,10 +53,6 @@ export class RepetitiveWord {
   updateSelectedValue = (event) => {
     const textNode = document.createTextNode(event.value);
     this.#clickedElemtnt.replaceWith(textNode);
-
-    const textarea = document.getElementById('textarea');
-    const output = document.getElementById('output');
-    textarea.value = output.innerText;
   };
 
   showWord(result) {
@@ -72,6 +76,7 @@ export class RepetitiveWord {
         this.#popup.showNewWord(data, this.updateSelectedValue);
       });
     });
+    this.#btn.innerText = '반영하기';
   }
 
   getWords = async (event) => {
