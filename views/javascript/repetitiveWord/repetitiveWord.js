@@ -4,7 +4,7 @@ import { RepetitiveWordPopup } from './popup.js';
 export class RepetitiveWord {
   #popup;
   #btn;
-  #clickedElemtnt;
+  #clickedElement;
   #textarea;
   #output;
   #REPEATIVE_BTN_OPTION;
@@ -64,7 +64,7 @@ export class RepetitiveWord {
 
   updateSelectedValue = (event) => {
     const textNode = document.createTextNode(event.value);
-    this.#clickedElemtnt.replaceWith(textNode);
+    this.#clickedElement.replaceWith(textNode);
   };
 
   showWord(result) {
@@ -84,7 +84,7 @@ export class RepetitiveWord {
     document.querySelectorAll('.highlight.green').forEach((element) => {
       element.addEventListener('click', async (event) => {
         this.#popup.showLoading(event, '대체어를 불러오는 중입니다...');
-        this.#clickedElemtnt = event.target;
+        this.#clickedElement = event.target;
         const data = await this.getWords(event);
         this.#popup.showNewWord(data, this.updateSelectedValue);
       });
