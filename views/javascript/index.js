@@ -1,4 +1,4 @@
-import { AutoCompleteSettings } from './autoComplete/autoCompleteSettings.js';
+import { AutoCompletion } from './autoComplete/autoCompletion.js';
 import { AlertPopup } from './components/alertPopup.js';
 import { BaseSlide } from './components/baseSlide.js';
 import { CursorBox } from './components/cursorBox.js';
@@ -24,13 +24,9 @@ const writingTool = new WritingTool(
   highlightContainer,
 );
 
-const autoCompleteSettings = new AutoCompleteSettings(cursorBox);
+const autoCompletion = new AutoCompletion(cursorBox);
 
-const textarea = new Textarea(
-  textareaHolder,
-  autoCompleteSettings,
-  writingTool,
-);
+const textarea = new Textarea(textareaHolder, autoCompletion, writingTool);
 
 const endingChoice = document.getElementById('ending-choice');
 endingChoice.addEventListener('change', (event) =>

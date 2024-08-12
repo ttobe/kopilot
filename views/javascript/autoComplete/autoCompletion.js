@@ -3,17 +3,21 @@ import {
   plainEndingMap,
   politeEndingMap,
 } from '../constants/endingMap.js';
+import { InputTracker } from './inputTracker.js';
+import { Pointer } from './pointer.js';
 
-const INITIAL_POINTER = 0;
-
-export class AutoCompleteSettings {
+export class AutoCompletion {
   #endingMap = formalEndingMap;
-  #char = '';
-  #word = '';
-  #pointer = INITIAL_POINTER;
+
+  #inputTracker;
+
+  #pointer;
+
   #cursorBox;
 
   constructor(cursorBox) {
+    this.#inputTracker = new InputTracker();
+    this.#pointer = new Pointer();
     this.#cursorBox = cursorBox;
   }
 
@@ -22,11 +26,11 @@ export class AutoCompleteSettings {
   }
 
   #getEndingWithWord() {
-    return this.#endingMap[this.#word];
+    return this.#endingMap[this.#inputTracker.getWord()];
   }
 
   #getEndingWithLastChar() {
-    return this.#endingMap[this.#getLastChar()];
+    return this.#endingMap[this.#inputTracker.getLastChar()];
   }
 
   hasEnding() {
@@ -43,61 +47,44 @@ export class AutoCompleteSettings {
   }
 
   hasChar() {
-    return this.#char;
+    return this.#inputTracker.hasChar();
   }
 
   emptyChar() {
-    this.#char = '';
+    this.#inputTracker.emptyChar();
   }
 
   updateChar(char) {
-    this.#char = char;
+    this.#inputTracker.updateChar(char);
   }
 
   backspaceChar() {
-    this.#char = this.#char.slice(0, -1);
-  }
-
-  #emptyWord() {
-    this.#word = '';
+    this.#inputTracker.backspaceChar();
   }
 
   updateWord(char) {
-    this.#word += char;
-    this.emptyChar();
-  }
-
-  #getLastChar() {
-    return this.#word.slice(-1) || null;
+    this.#inputTracker.updateWord(char);
   }
 
   backspaceWord() {
-    this.#word = this.#word.slice(0, -1);
+    this.#inputTracker.backspaceWord();
     if (!this.hasEnding()) {
       this.emptyCursorBox();
     }
   }
 
   getPointer() {
-    return this.#pointer;
-  }
-
-  #setPointer(pointer) {
-    this.#pointer = pointer;
-  }
-
-  #emptyPointer() {
-    this.#pointer = INITIAL_POINTER;
+    return this.#pointer.get();
   }
 
   emptyBuffers() {
-    this.#emptyWord();
+    this.#inputTracker.emptyWord();
     this.emptyChar();
-    this.#emptyPointer();
+    this.#pointer.empty();
   }
 
   showCursorBox(pointer) {
-    this.#setPointer(pointer);
+    this.#pointer.set(pointer);
     this.#cursorBox.show(this.getEnding());
   }
 
