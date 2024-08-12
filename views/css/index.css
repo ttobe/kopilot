@@ -181,7 +181,13 @@ span.em {
   font-size: var(--font-size--large);
 }
 
-.load-button {
+.buttons {
+  display: flex;
+  margin-left: auto;
+  gap: var(--spacing--small);
+}
+
+#load-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -191,7 +197,17 @@ span.em {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-left: auto;
+}
+
+#save-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .textarea-wrapper {
