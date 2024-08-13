@@ -3,7 +3,13 @@
     <div class='description'>
       <div class='title'>원문</div>
       <div class='detail'>드래그하여 부분적으로 글을 수정해보세요!</div>
-      <img src='/images/history.png' class="load-button" id="load-button"/>
+      <div class="buttons">
+        <div id="save-button">
+          <img src='/images/save.png'/>
+          <span class="tooltip bottom">작성 중인 글을 저장할 수 있어요.<br>버튼이나 Ctrl + S를 이용해서 저장해보세요!</span>
+        </div>
+        <img src='/images/history.png' class="buttons" id="load-button"/>
+      </div>
     </div>
     <div id='textarea-container'>
       <textarea id='textarea'></textarea>

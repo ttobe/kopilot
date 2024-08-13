@@ -182,17 +182,27 @@ span.em {
   font-size: var(--font-size--large);
 }
 
-.load-button {
+.buttons {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-left: auto;
+  gap: var(--spacing--small);
+}
+
+#load-button {
   width: 1.45rem;
   height: 1.45rem;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  margin-left: auto;
+}
+
+#save-button {
+  position: relative;
+}
+
+#save-button > img {
+  display: flex;
+  width: 1.45rem;
+  height: 1.45rem;
+  cursor: pointer;
 }
 
 .textarea-wrapper {
@@ -268,6 +278,17 @@ span.em {
 }
 
 #feedback-floating-btn:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+#save-button .tooltip {
+  width: 18rem;
+  font-size: var(--font-size--x-small);
+  font-weight: 500;
+}
+
+#save-button:hover .tooltip {
   visibility: visible;
   opacity: 1;
 }

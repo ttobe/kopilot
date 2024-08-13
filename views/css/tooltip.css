@@ -26,6 +26,12 @@
   transform: translateY(-50%);
 }
 
+.tooltip.bottom {
+  top: 150%;
+  left: 80%;
+  transform: translateX(-50%);
+}
+
 .tooltip::after {
   position: absolute;
   content: '';
@@ -46,4 +52,10 @@
   top: 50%;
   left: 100%;
   transform: translateY(-50%);
+}
+
+.tooltip.bottom::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
 }
