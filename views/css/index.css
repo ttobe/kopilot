@@ -522,6 +522,19 @@ span.em {
   cursor: pointer;
 }
 
+#naver_id_login {
+  position: fixed;
+
+  top: 3rem;
+  right: var(--floating-button--right);
+  z-index: var(--z-index--highest);
+}
+
+#naver_id_login > img {
+  width: var(--floating-button--width);
+  cursor: pointer;
+}
+
 @media (max-width: 1280px) {
   :root {
     --font-size--large: 1rem;
