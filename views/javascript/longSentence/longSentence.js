@@ -74,9 +74,8 @@ export class LongSentence {
 
   checkLength = () => {
     let text = this.#textarea.value;
-    text = text.replace(/\n/g, '<br>');
+    const sentences = text.match(/[^\.!\?\n\r]*(?:[\.!\?\n\r]+)+/g);
 
-    const sentences = text.match(/[^\.!\?\n\r]+[\.!\?\n\r]+|[^\.!\?\n\r]+$/g);
     let outputContent = '';
     this.resetCounter();
     if (sentences) {
