@@ -2,10 +2,10 @@ import { KEY } from '../constants/eventKey.js';
 import { LongSentence } from '../longSentence/longSentence.js';
 import { spellCheck } from '../spell/spellCheck.js';
 import { versionStorage } from '../storage/versionStorage.js';
-import { ScrollTracker } from '../utils/ScrollTracker.js';
 import { CharChecker } from '../utils/charChecker.js';
 import { CharCounter } from '../utils/charCounter.js';
 import { KeyChecker } from '../utils/keyChecker.js';
+import { ScrollTracker } from '../utils/scrollTracker.js';
 import { BaseComponent } from './baseComponent.js';
 
 export class Textarea extends BaseComponent {

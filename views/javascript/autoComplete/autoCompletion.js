@@ -47,12 +47,35 @@ export class AutoCompletion {
     const autoPointer = this.getPointer();
 
     if (!this.#inputTracker.isComposing()) {
+      this.emptyChar();
       removeIncompleteCallback(autoPointer - 1);
+
+      this.#insertPhraseAndSetCursor(
+        autoPointer - 1,
+        ending,
+        insertPhraseCallback,
+        setNextCursorCallback,
+      );
+      return;
     }
 
+    this.#insertPhraseAndSetCursor(
+      autoPointer,
+      ending,
+      insertPhraseCallback,
+      setNextCursorCallback,
+    );
+  }
+
+  #insertPhraseAndSetCursor(
+    autoPointer,
+    ending,
+    insertPhraseCallback,
+    setNextCursorCallback,
+  ) {
     insertPhraseCallback(autoPointer, ending);
-    this.reset();
     setNextCursorCallback(autoPointer, ending);
+    this.reset();
   }
 
   #getEnding() {
