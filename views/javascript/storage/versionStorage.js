@@ -175,6 +175,19 @@ class VersionStorage {
     this.#storagePopup.style.top = `${rect.bottom + window.scrollY + 2}px`;
     this.#storagePopup.style.left = `${rect.right - width * 16 + window.scrollX}px`;
     this.#storagePopup.style.display = 'block';
+
+    // 강제로 레이아웃을 재계산하여 애니메이션이 적용되도록 함
+    this.#storagePopup.offsetHeight;
+    this.#storagePopup.classList.add('show');
+  }
+
+  #hideList() {
+    this.#storagePopup.classList.remove('show');
+
+    // 애니메이션 기다리기
+    setTimeout(() => {
+      this.#storagePopup.style.display = 'none';
+    }, 300);
   }
 
   async saveAndPopup() {
@@ -200,25 +213,24 @@ class VersionStorage {
   }
 
   #setEvent() {
-    document
-      .getElementById('load-button')
-      .addEventListener('click', (event) => {
-        if (
-          this.#storagePopup.style.display === 'none' ||
-          this.#storagePopup.style.display === ''
-        ) {
-          this.#onLoadButtonClick(event);
-        } else {
-          this.#storagePopup.style.display = 'none';
-        }
-      });
+    const loadButton = document.getElementById('load-button');
+    const cancelButton = document.getElementById('cancel-button');
+    const saveButton = document.getElementById('save-button');
 
-    document.getElementById('save-button').addEventListener('click', () => {
+    loadButton.addEventListener('click', (event) => {
+      if (this.#storagePopup.classList.contains('show')) {
+        this.#hideList();
+      } else {
+        this.#onLoadButtonClick(event);
+      }
+    });
+
+    saveButton.addEventListener('click', () => {
       this.saveAndPopup();
     });
 
-    document.getElementById('cancel-button').addEventListener('click', () => {
-      this.#storagePopup.style.display = 'none';
+    cancelButton.addEventListener('click', () => {
+      this.#hideList();
     });
   }
 }
