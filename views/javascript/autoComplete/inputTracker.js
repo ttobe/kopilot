@@ -50,6 +50,5 @@ export class InputTracker {
 
   isComposing() {
     return this.getChar() !== '' && this.getWord() === '';
-    // return this.#char !== '';
   }
 }
