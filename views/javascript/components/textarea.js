@@ -42,8 +42,8 @@ export class Textarea extends BaseComponent {
     this.#autoCompletion.setEndingType(key);
   }
 
-  static isSaveInput(ctrlKey, key) {
-    return ctrlKey && key === 's';
+  static isSaveInput(event) {
+    return (event.ctrlKey || event.metaKey) && event.code === 'KeyS';
   }
 
   static isCursorMoved(code, key) {
@@ -90,7 +90,7 @@ export class Textarea extends BaseComponent {
     const code = event.code;
     const key = event.key;
 
-    if (Textarea.isSaveInput(event.ctrlKey, event.key)) {
+    if (Textarea.isSaveInput(event)) {
       event.preventDefault();
       await versionStorage.saveAndPopup();
       return;
