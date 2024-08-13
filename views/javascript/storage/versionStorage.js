@@ -170,7 +170,7 @@ class VersionStorage {
   #showList(event) {
     const button = event.target;
     const rect = button.getBoundingClientRect();
-    const width = 13; // 13rem
+    const width = 12; // 13rem
 
     this.#storagePopup.style.top = `${rect.bottom + window.scrollY + 2}px`;
     this.#storagePopup.style.left = `${rect.right - width * 16 + window.scrollX}px`;

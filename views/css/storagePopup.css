@@ -5,7 +5,7 @@
   border: 0.2rem solid #ccc;
   padding: 10px;
   z-index: 1000;
-  width: 13rem;
+  width: 12rem;
   border-radius: 0.5rem;
   opacity: 0;
   transform: translateY(-10px);
@@ -15,7 +15,6 @@
 }
 
 #storage-popup.show {
-  display: block;
   opacity: 1;
   transform: translateY(0);
 }
@@ -29,7 +28,7 @@
 }
 
 #version-list li {
-  padding: 0.5rem;
+  padding: 0.3rem;
   border-bottom: 0.1rem solid #eee;
   text-align: center;
 }
