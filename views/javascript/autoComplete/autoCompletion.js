@@ -21,8 +21,46 @@ export class AutoCompletion {
     this.#cursorBox = cursorBox;
   }
 
-  getEnding() {
-    return this.#getEndingWithWord() ?? this.#getEndingWithLastChar();
+  canActivate() {
+    return this.#getEnding() ? true : false;
+  }
+
+  activate(pointer) {
+    this.#showCursorBox(pointer);
+  }
+
+  reset() {
+    this.#cursorBox.empty();
+    this.#emptyBuffers();
+  }
+
+  execute(
+    removeIncompleteCallback,
+    insertPhraseCallback,
+    setNextCursorCallback,
+  ) {
+    const ending = this.#getEnding();
+    if (!ending) {
+      return;
+    }
+
+    const autoPointer = this.getPointer();
+
+    if (!this.#inputTracker.isComposing()) {
+      removeIncompleteCallback(autoPointer - 1);
+    }
+
+    insertPhraseCallback(autoPointer, ending);
+    this.reset();
+    setNextCursorCallback(autoPointer, ending);
+  }
+
+  #getEnding() {
+    return (
+      this.#getEndingWithWord() ??
+      this.#getEndingWithLastChar() ??
+      this.#getEndingWithChar()
+    );
   }
 
   #getEndingWithWord() {
@@ -33,8 +71,8 @@ export class AutoCompletion {
     return this.#endingMap[this.#inputTracker.getLastChar()];
   }
 
-  hasEnding() {
-    return this.getEnding() ? true : false;
+  #getEndingWithChar() {
+    return this.#endingMap[this.#inputTracker.getChar()];
   }
 
   setEndingType(selected) {
@@ -68,8 +106,9 @@ export class AutoCompletion {
 
   backspaceWord() {
     this.#inputTracker.backspaceWord();
-    if (!this.hasEnding()) {
-      this.emptyCursorBox();
+
+    if (!this.canActivate()) {
+      this.#cursorBox.empty();
     }
   }
 
@@ -77,23 +116,13 @@ export class AutoCompletion {
     return this.#pointer.get();
   }
 
-  emptyBuffers() {
-    this.#inputTracker.emptyWord();
-    this.emptyChar();
-    this.#pointer.empty();
-  }
-
-  showCursorBox(pointer) {
+  #showCursorBox(pointer) {
     this.#pointer.set(pointer);
-    this.#cursorBox.show(this.getEnding());
+    this.#cursorBox.show(this.#getEnding());
   }
 
-  emptyCursorBox() {
-    this.#cursorBox.empty();
-  }
-
-  emptyAll() {
-    this.emptyCursorBox();
-    this.emptyBuffers();
+  #emptyBuffers() {
+    this.#inputTracker.reset();
+    this.#pointer.reset();
   }
 }
