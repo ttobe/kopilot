@@ -44,37 +44,15 @@ export class AutoCompletion {
       return;
     }
 
-    const autoPointer = this.getPointer();
+    const pointer = this.getPointer();
 
     if (!this.#inputTracker.isComposing()) {
       this.emptyChar();
-      removeIncompleteCallback(autoPointer - 1);
-
-      this.#insertPhraseAndSetCursor(
-        autoPointer - 1,
-        ending,
-        insertPhraseCallback,
-        setNextCursorCallback,
-      );
-      return;
+      removeIncompleteCallback(pointer);
     }
 
-    this.#insertPhraseAndSetCursor(
-      autoPointer,
-      ending,
-      insertPhraseCallback,
-      setNextCursorCallback,
-    );
-  }
-
-  #insertPhraseAndSetCursor(
-    autoPointer,
-    ending,
-    insertPhraseCallback,
-    setNextCursorCallback,
-  ) {
-    insertPhraseCallback(autoPointer, ending);
-    setNextCursorCallback(autoPointer, ending);
+    insertPhraseCallback(pointer, ending);
+    setNextCursorCallback(pointer, ending);
     this.reset();
   }
 
@@ -136,7 +114,7 @@ export class AutoCompletion {
   }
 
   getPointer() {
-    return this.#pointer.get();
+    return this.#pointer.get() - !this.#inputTracker.isComposing();
   }
 
   #showCursorBox(pointer) {
