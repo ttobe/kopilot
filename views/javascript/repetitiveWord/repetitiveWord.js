@@ -63,8 +63,11 @@ export class RepetitiveWord {
   };
 
   updateSelectedValue = (event) => {
-    const textNode = document.createTextNode(event.value);
-    this.#clickedElement.replaceWith(textNode);
+    const text = document.createElement('span');
+    text.classList.add('green-text');
+    text.textContent = event.value;
+
+    this.#clickedElement.replaceWith(text);
   };
 
   showWord(result) {
