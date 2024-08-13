@@ -43,6 +43,8 @@
   --z-index--high: 1000;
   --z-index--higher: 10000;
   --z-index--highest: 100000;
+
+  --icon-size--medium: 1.3rem;
 }
 
 * {
@@ -175,6 +177,7 @@ span.em {
 
 .description {
   width: 100%;
+  min-height: 2.5rem;
   display: flex;
   gap: var(--spacing--medium);
   align-items: center;
@@ -182,27 +185,26 @@ span.em {
   font-size: var(--font-size--large);
 }
 
-.buttons {
+.icon-btn-group {
   display: flex;
   margin-left: auto;
   gap: var(--spacing--small);
 }
 
-#load-button {
-  width: 1.45rem;
-  height: 1.45rem;
+.icon-btn-group .icon-btn {
   cursor: pointer;
+
+  width: var(--icon-size--medium);
+  height: var(--icon-size--medium);
 }
 
 #save-button {
   position: relative;
+  display: flex;
 }
 
-#save-button > img {
-  display: flex;
-  width: 1.45rem;
-  height: 1.45rem;
-  cursor: pointer;
+#save-button .tooltip {
+  left: calc(40% + var(--icon-size--medium) / 2);
 }
 
 .textarea-wrapper {
@@ -414,7 +416,9 @@ span.em {
   flex-direction: column;
   gap: var(--spacing--medium);
 
-  width: 25rem;
+  min-width: 25rem;
+  max-width: 35rem;
+
   padding: 2rem;
   border-radius: var(--border-radius--large);
 

@@ -15,6 +15,6 @@
   background-color: white;
   color: var(--font-color--secondary);
 
-  z-index: var(--z-index--medium);
+  z-index: var(--z-index--high);
   pointer-events: none;
 }

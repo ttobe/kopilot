@@ -28,7 +28,7 @@
 
 .tooltip.bottom {
   top: 150%;
-  left: 80%;
+  left: 50%;
   transform: translateX(-50%);
 }
 

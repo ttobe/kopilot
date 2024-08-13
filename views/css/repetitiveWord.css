@@ -3,9 +3,10 @@
 }
 
 #repeative-btn {
-  margin-left: auto;
-  font-size: medium;
-  border: var(--primary-color) 2px solid;
-  padding: 5px;
-  border-radius: 10px;
+  padding: 0.5rem;
+
+  font-size: var(--font-size--small);
+
+  border: var(--primary-color) var(--border-size--thin) solid;
+  border-radius: var(--border-radius--large);
 }

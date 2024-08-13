@@ -2,42 +2,48 @@ import { KEY } from '../constants/eventKey.js';
 import { LongSentence } from '../longSentence/longSentence.js';
 import { spellCheck } from '../spell/spellCheck.js';
 import { versionStorage } from '../storage/versionStorage.js';
+import { ScrollTracker } from '../utils/ScrollTracker.js';
 import { CharChecker } from '../utils/charChecker.js';
 import { CharCounter } from '../utils/charCounter.js';
 import { KeyChecker } from '../utils/keyChecker.js';
-import { AlertPopup } from './alertPopup.js';
 import { BaseComponent } from './baseComponent.js';
 
 export class Textarea extends BaseComponent {
   #output;
   #writingTool;
-  #alertPopup;
 
   #charCount;
   #byteCount;
 
   #autoCompletion;
+
   #nextCursorPointer;
+  #scrollTracker;
+
   #longSentence;
 
   constructor(holder, autoCompletion, writingTool) {
     super(holder);
 
     this.#output = document.getElementById('output');
+    this.#writingTool = writingTool;
+
     this.#charCount = document.getElementById('char-count-value');
     this.#byteCount = document.getElementById('byte-count-value');
-    this.#alertPopup = new AlertPopup(
-      document.getElementById('main-alert-popup'),
-    );
 
     this.#autoCompletion = autoCompletion;
-    this.#writingTool = writingTool;
+    this.#scrollTracker = new ScrollTracker(holder);
+
     this.#longSentence = LongSentence.getInstance();
     this.#init();
   }
 
   changeEndingType(key) {
     this.#autoCompletion.setEndingType(key);
+  }
+
+  static isSaveInput(ctrlKey, key) {
+    return ctrlKey && key === 's';
   }
 
   static isCursorMoved(code, key) {
@@ -54,7 +60,6 @@ export class Textarea extends BaseComponent {
 
   handleInputEvent(event) {
     spellCheck.spellCheckOnContinuousInput();
-
     this.#output.innerHTML = this.holder.value;
 
     if (!event.isComposing && CharChecker.isIMECharacter(event.data)) {
@@ -64,6 +69,16 @@ export class Textarea extends BaseComponent {
     }
 
     this.#update();
+
+    // FIXME
+    /**
+     * 1. 개발자 도구를 열거나 반응형으로 떨어졌을 때
+     * 2. 스크롤이 될 정도로 긴 글의 마지막 줄에서 스크롤이 살짝 안 맞음
+     * */
+    const scrollTop = this.#scrollTracker.getScrollTop();
+    if (scrollTop !== null) {
+      this.holder.scrollTop = scrollTop;
+    }
   }
 
   async handleKeydownEvent(event) {
@@ -75,7 +90,7 @@ export class Textarea extends BaseComponent {
     const code = event.code;
     const key = event.key;
 
-    if (event.ctrlKey && event.key === 's') {
+    if (Textarea.isSaveInput(event.ctrlKey, event.key)) {
       event.preventDefault();
       await versionStorage.saveAndPopup();
       return;
@@ -135,7 +150,8 @@ export class Textarea extends BaseComponent {
       return;
     }
 
-    const scrollTop = this.holder.scrollTop;
+    this.#scrollTracker.keepPrevScrollHeight();
+
     if (cursorPointer === autoPointer + 1) {
       this.#removeIncompleteCharacter(autoPointer);
     }
@@ -143,7 +159,7 @@ export class Textarea extends BaseComponent {
     this.#autoCompletion.emptyAll();
     this.#setNextCursorPointer(autoPointer, ending);
 
-    this.holder.scrollTop = scrollTop;
+    this.#scrollTracker.setScrollTop();
     return;
   }
 

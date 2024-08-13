@@ -30,4 +30,12 @@ export class DomManager {
   static changeOpacity(element, opacity) {
     element.style.opacity = opacity;
   }
+
+  static changePosition(element, position) {
+    element.style.position = position;
+  }
+
+  static calculateLineHeight(element) {
+    return parseFloat(window.getComputedStyle(element).lineHeight) || 0;
+  }
 }
