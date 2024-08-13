@@ -416,7 +416,9 @@ span.em {
   flex-direction: column;
   gap: var(--spacing--medium);
 
+  min-width: 25rem;
   max-width: 35rem;
+
   padding: 2rem;
   border-radius: var(--border-radius--large);
 
