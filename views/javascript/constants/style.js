@@ -3,6 +3,10 @@ const DISPLAY = {
   NONE: 'none',
 };
 
+const POSITION = {
+  ABSOLUTE: 'absolute',
+};
+
 const VISIBILITY = {
   VISIBLE: 'visible',
   HIDDEN: 'hidden',
@@ -17,4 +21,5 @@ export const STYLE = {
   DISPLAY,
   VISIBILITY,
   OPACITY,
+  POSITION,
 };

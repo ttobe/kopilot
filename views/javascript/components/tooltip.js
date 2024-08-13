@@ -1,22 +1,28 @@
+import { COPY_STYLE } from '../constants/copyStyle.js';
+import { STYLE } from '../constants/style.js';
+import { DomManager } from '../utils/domManager.js';
 import { BaseComponent } from './baseComponent.js';
 
 export class Tooltip extends BaseComponent {
   anchor;
+  #lineHeight;
 
   constructor(holder, anchor) {
     super(holder);
     this.anchor = anchor;
+    this.#lineHeight = DomManager.calculateLineHeight(this.anchor);
   }
 
   updatePosition() {
     const { top, left } = Tooltip.getCursorCoordinates(this.anchor);
-    this.holder.style.top = `${top + 24}px`;
+    this.holder.style.top = `${top + this.#lineHeight}px`;
     this.holder.style.left = `${left}px`;
   }
 
   static getCursorCoordinates(anchor) {
     const div = Tooltip.makeDummyDiv(anchor);
     const span = document.createElement('span');
+
     span.textContent = '|';
     div.appendChild(span);
 
@@ -55,37 +61,12 @@ export class Tooltip extends BaseComponent {
     const div = document.createElement('div');
     const style = getComputedStyle(anchor);
 
-    [
-      'width',
-      'boxSizing',
-      'fontFamily',
-      'fontSize',
-      'fontWeight',
-      'fontStyle',
-      'letterSpacing',
-      'textTransform',
-      'textAlign',
-      'whiteSpace',
-      'wordWrap',
-      'lineHeight',
-      'marginTop',
-      'marginRight',
-      'marginBottom',
-      'marginLeft',
-      'paddingTop',
-      'paddingRight',
-      'paddingBottom',
-      'paddingLeft',
-      'borderTopWidth',
-      'borderRightWidth',
-      'borderBottomWidth',
-      'borderLeftWidth',
-    ].forEach((prop) => {
+    for (const prop of COPY_STYLE) {
       div.style[prop] = style[prop];
-    });
-    div.style.position = 'absolute';
-    div.style.whiteSpace = 'pre-wrap';
-    div.style.visibility = 'hidden';
+    }
+
+    DomManager.changePosition(div, STYLE.POSITION.ABSOLUTE);
+    DomManager.changeVisibility(div, STYLE.VISIBILITY.HIDDEN);
 
     div.textContent = val.substring(0, cursorPointer);
 
