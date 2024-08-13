@@ -6,13 +6,11 @@ import { ScrollTracker } from '../utils/ScrollTracker.js';
 import { CharChecker } from '../utils/charChecker.js';
 import { CharCounter } from '../utils/charCounter.js';
 import { KeyChecker } from '../utils/keyChecker.js';
-import { AlertPopup } from './alertPopup.js';
 import { BaseComponent } from './baseComponent.js';
 
 export class Textarea extends BaseComponent {
   #output;
   #writingTool;
-  #alertPopup;
 
   #charCount;
   #byteCount;
@@ -29,9 +27,6 @@ export class Textarea extends BaseComponent {
 
     this.#output = document.getElementById('output');
     this.#writingTool = writingTool;
-    this.#alertPopup = new AlertPopup(
-      document.getElementById('main-alert-popup'),
-    );
 
     this.#charCount = document.getElementById('char-count-value');
     this.#byteCount = document.getElementById('byte-count-value');
