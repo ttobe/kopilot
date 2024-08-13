@@ -188,26 +188,16 @@ span.em {
 }
 
 #load-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 1.45rem;
   height: 1.45rem;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 #save-button > img {
   display: flex;
-  justify-content: center;
-  align-items: center;
   width: 1.45rem;
   height: 1.45rem;
-  border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .textarea-wrapper {
