@@ -27,10 +27,11 @@
 }
 
 .tooltip.bottom {
-  top: 19%;
-  left: 43%;
+  top: 150%;
+  left: 80%;
   transform: translateX(-50%);
 }
+
 .tooltip::after {
   position: absolute;
   content: '';
@@ -56,6 +57,5 @@
 .tooltip.bottom::after {
   bottom: 100%;
   left: 50%;
-  transform: translateX(-50%);
-  border-color: transparent transparent black transparent;
+  transform: translateX(-50%) rotate(180deg);
 }

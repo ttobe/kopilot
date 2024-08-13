@@ -193,6 +193,10 @@ span.em {
   cursor: pointer;
 }
 
+#save-button {
+  position: relative;
+}
+
 #save-button > img {
   display: flex;
   width: 1.45rem;
@@ -278,6 +282,7 @@ span.em {
 }
 
 #save-button .tooltip {
+  width: 14rem;
   font-size: var(--font-size--x-small);
   font-weight: 500;
 }
