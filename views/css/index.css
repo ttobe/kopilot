@@ -282,7 +282,7 @@ span.em {
 }
 
 #save-button .tooltip {
-  width: 14rem;
+  width: 18rem;
   font-size: var(--font-size--x-small);
   font-weight: 500;
 }
