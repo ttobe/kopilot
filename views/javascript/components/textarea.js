@@ -66,13 +66,8 @@ export class Textarea extends BaseComponent {
 
     this.#update();
 
-    // FIXME
-    /**
-     * 1. 개발자 도구를 열거나 반응형으로 떨어졌을 때
-     * 2. 스크롤이 될 정도로 긴 글의 마지막 줄에서 스크롤이 살짝 안 맞음
-     * */
     const scrollTop = this.#scrollTracker.getScrollTop();
-    if (scrollTop !== null) {
+    if (scrollTop !== null && !event.bubbles) {
       this.holder.scrollTop = scrollTop;
     }
   }
