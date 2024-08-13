@@ -30,11 +30,13 @@ export class RepetitiveWord {
           this.#popup.denyPopup();
           return;
         }
-        this.#popup.showLoading(event, '반복되는 단어를 탐지 중입니다...');
+
+        this.#btn.innerText = '로딩 중';
+        this.#btn.disable = true;
         const words = await this.getRepetitiveWord(text);
-        this.#popup.showPopup(words, (words) => {
-          this.showWord(words);
-        });
+
+        this.showWord(words);
+
         this.#btn.innerText = this.#APPLY_BTN_OPTION;
         break;
 
