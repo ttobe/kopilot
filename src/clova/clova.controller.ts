@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { StreamInterceptor } from 'src/clova/interceptors/stream-interceptor';
+import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { ClovaService } from './clova.service';
 import { FeedbackService } from './feedback.service';
 import { ParsedSentenceService } from './parsed-sentence.service';
@@ -23,6 +24,20 @@ export class ClovaController {
     @Body('systemMessage') systemMessage: string | null,
   ) {
     return this.partialModification.getResult(input, command, systemMessage);
+  }
+
+  @Post('/partial-modification/stream')
+  @UseInterceptors(StreamInterceptor)
+  async getPartialModificationResultForStream(
+    @Body('input') input: string,
+    @Body('command') command: CommandValue,
+    @Body('systemMessage') systemMessage: string | null,
+  ) {
+    return await this.partialModification.getResultForStream(
+      input,
+      command,
+      systemMessage,
+    );
   }
 
   @Post('/parsed-line')
