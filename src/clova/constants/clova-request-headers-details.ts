@@ -22,6 +22,13 @@ export const ClovaChatCompletionsRequestHeaders: ClovaRequestHeader = {
     process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS,
 };
 
+export const ClovaChatCompletionsRequestHeadersForStream: ClovaRequestHeader = {
+  ...ClovaRequestHeaders,
+  'X-NCP-CLOVASTUDIO-REQUEST-ID':
+    process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS,
+  Accept: ' text/event-stream',
+};
+
 export const ClovaChatCompletionsRequestHeadersForHCX003: ClovaRequestHeader = {
   ...ClovaRequestHeaders,
   'X-NCP-CLOVASTUDIO-REQUEST-ID':
