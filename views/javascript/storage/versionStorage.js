@@ -6,6 +6,7 @@ class VersionStorage {
   #STORE_NAME = 'kopilot'; // 객체 저장소 이름
   #SAVE_INTERNAL = 60000; // 1분
   #ITEM_COUNT = 10; // 10개만 저장하기
+  #WIDTH = 10;
   #OPTIONS = {
     month: '2-digit',
     day: '2-digit',
@@ -170,10 +171,9 @@ class VersionStorage {
   #showList(event) {
     const button = event.target;
     const rect = button.getBoundingClientRect();
-    const width = 12; // 13rem
 
     this.#storagePopup.style.top = `${rect.bottom + window.scrollY + 2}px`;
-    this.#storagePopup.style.left = `${rect.right - width * 16 + window.scrollX}px`;
+    this.#storagePopup.style.left = `${rect.right - this.#WIDTH * 16 + window.scrollX}px`;
     this.#storagePopup.style.display = 'block';
 
     // 강제로 레이아웃을 재계산하여 애니메이션이 적용되도록 함
