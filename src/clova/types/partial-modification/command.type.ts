@@ -18,4 +18,5 @@ export type CommandSpec = {
   label: CommandLabel;
   position: CommandPosition;
   length: number;
+  stream: boolean;
 };
