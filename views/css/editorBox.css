@@ -9,9 +9,10 @@
 }
 
 #editor-box textarea {
-  padding: 0.3rem;
+  padding: 0.5rem;
 
-  font-size: var(--font-size--small);
+  font-size: var(--font-size--medium);
+  line-height: 1.2rem;
 
   border: none;
   border-radius: var(--border-radius--medium);
