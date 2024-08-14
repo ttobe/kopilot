@@ -2,10 +2,10 @@ import { KEY } from '../constants/eventKey.js';
 import { LongSentence } from '../longSentence/longSentence.js';
 import { spellCheck } from '../spell/spellCheck.js';
 import { versionStorage } from '../storage/versionStorage.js';
-import { ScrollTracker } from '../utils/ScrollTracker.js';
 import { CharChecker } from '../utils/charChecker.js';
 import { CharCounter } from '../utils/charCounter.js';
 import { KeyChecker } from '../utils/keyChecker.js';
+import { ScrollTracker } from '../utils/scrollTracker.js';
 import { BaseComponent } from './baseComponent.js';
 
 export class Textarea extends BaseComponent {
@@ -54,10 +54,6 @@ export class Textarea extends BaseComponent {
     );
   }
 
-  static isAutoCompletePosition(currPointer, autoPointer) {
-    return currPointer === autoPointer || currPointer === autoPointer + 1;
-  }
-
   handleInputEvent(event) {
     spellCheck.spellCheckOnContinuousInput();
     this.#output.innerHTML = this.holder.value;
@@ -70,13 +66,8 @@ export class Textarea extends BaseComponent {
 
     this.#update();
 
-    // FIXME
-    /**
-     * 1. 개발자 도구를 열거나 반응형으로 떨어졌을 때
-     * 2. 스크롤이 될 정도로 긴 글의 마지막 줄에서 스크롤이 살짝 안 맞음
-     * */
     const scrollTop = this.#scrollTracker.getScrollTop();
-    if (scrollTop !== null) {
+    if (scrollTop !== null && !event.bubbles) {
       this.holder.scrollTop = scrollTop;
     }
   }
@@ -96,15 +87,12 @@ export class Textarea extends BaseComponent {
       return;
     }
 
-    const cursorPointer = this.#getCursorPointer();
-    const autoPointer = this.#autoCompletion.getPointer();
-
     if (KeyChecker.isSentenceTerminated(key)) {
       spellCheck.spellCheckOnPunctuation();
     }
 
-    if (!Textarea.isAutoCompletePosition(cursorPointer, autoPointer)) {
-      this.#autoCompletion.emptyCursorBox();
+    if (!this.#autoCompletion.canActivate()) {
+      this.#autoCompletion.reset();
     }
 
     if (code === KEY.BACKSPACE) {
@@ -113,13 +101,13 @@ export class Textarea extends BaseComponent {
     }
 
     if (Textarea.isCursorMoved(code, key)) {
-      this.#autoCompletion.emptyAll();
+      this.#autoCompletion.reset();
       return;
     }
 
     if (code === KEY.TAB) {
       event.preventDefault();
-      this.#handleAutoComplete(cursorPointer, autoPointer);
+      this.#handleAutoComplete();
       return;
     }
   }
@@ -144,23 +132,16 @@ export class Textarea extends BaseComponent {
     this.#autoCompletion.backspaceWord();
   }
 
-  #handleAutoComplete(cursorPointer, autoPointer) {
-    const ending = this.#autoCompletion.getEnding();
-    if (!ending) {
-      return;
-    }
-
+  #handleAutoComplete() {
     this.#scrollTracker.keepPrevScrollHeight();
 
-    if (cursorPointer === autoPointer + 1) {
-      this.#removeIncompleteCharacter(autoPointer);
-    }
-    this.#insertPhrase(autoPointer, ending);
-    this.#autoCompletion.emptyAll();
-    this.#setNextCursorPointer(autoPointer, ending);
+    this.#autoCompletion.execute(
+      (pointer) => this.#removeIncompleteCharacter(pointer),
+      (pointer, ending) => this.#insertPhrase(pointer, ending),
+      (pointer, ending) => this.#setNextCursorPointer(pointer, ending),
+    );
 
     this.#scrollTracker.setScrollTop();
-    return;
   }
 
   #update() {
@@ -222,25 +203,28 @@ export class Textarea extends BaseComponent {
   }
 
   #addEventListener() {
-    this.holder.addEventListener('compositionstart', () =>
-      this.#autoCompletion.emptyChar(),
-    );
-    this.holder.addEventListener('compositionupdate', (event) =>
-      this.#autoCompletion.updateChar(event.data),
-    );
-    this.holder.addEventListener('compositionend', (event) => {
-      this.#autoCompletion.updateWord(event.data);
-
-      if (this.#autoCompletion.hasEnding()) {
-        this.#autoCompletion.showCursorBox(this.#getCursorPointer());
-      }
-    });
-
     this.holder.addEventListener('keydown', this.handleKeydownEvent);
     this.holder.addEventListener('input', this.handleInputEvent);
     this.holder.addEventListener(
       'selectionchange',
       this.handleSelectionChangeEvent,
+    );
+    this.#addIMEEventListener();
+  }
+
+  #addIMEEventListener() {
+    this.holder.addEventListener('compositionstart', () =>
+      this.#autoCompletion.emptyChar(),
+    );
+    this.holder.addEventListener('compositionupdate', (event) => {
+      this.#autoCompletion.updateChar(event.data);
+
+      if (this.#autoCompletion.canActivate()) {
+        this.#autoCompletion.activate(this.#getCursorPointer() + 1);
+      }
+    });
+    this.holder.addEventListener('compositionend', (event) =>
+      this.#autoCompletion.updateWord(event.data),
     );
   }
 

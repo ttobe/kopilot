@@ -6,14 +6,16 @@
   justify-content: center;
   align-items: center;
 
-  height: 1.5rem;
-  padding: 2px 5px;
+  padding: 0.2rem;
 
-  border: var(--border-size--thin) solid var(--font-color--tertiary);
+  border: var(--border-size--thin) solid var(--border-color--dark);
   border-radius: var(--border-radius--small);
 
   background-color: white;
   color: var(--font-color--secondary);
+
+  font-size: var(--font-size--medium);
+  font-family: var(--font-family--editor);
 
   z-index: var(--z-index--high);
   pointer-events: none;

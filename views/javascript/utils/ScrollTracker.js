@@ -26,20 +26,19 @@ export class ScrollTracker {
     const currScrollHeight = this.#holder.scrollHeight;
 
     const lineHeight = DomManager.calculateLineHeight(this.#holder);
-    const maxScrollTop = this.#calculateScrollTop(
-      currScrollHeight,
-      lineHeight,
-      clientHeight,
-    );
-
     if (
       this.#isLastLine(scrollTop, clientHeight, currScrollHeight, lineHeight)
     ) {
-      // FIXME 약간의 흔들림 문제로 lineHeight 추가 (추후 원인 파악 필요)
-      this.#scrollTop = maxScrollTop + lineHeight;
+      this.#scrollTop = currScrollHeight;
       return;
     }
+
     const diff = currScrollHeight - this.#prevScrollHeight;
+    const maxScrollTop = this.#calculateScrollTop(
+      currScrollHeight,
+      clientHeight,
+      lineHeight,
+    );
     this.#scrollTop = Math.min(scrollTop + diff, maxScrollTop);
   }
 
@@ -50,8 +49,8 @@ export class ScrollTracker {
     );
   }
 
-  #calculateScrollTop(scrollHeight, lineHeight, clientHeight) {
-    return scrollHeight + lineHeight - clientHeight;
+  #calculateScrollTop(scrollHeight, clientHeight, lineHeight) {
+    return scrollHeight - clientHeight + lineHeight;
   }
 
   #getPositionBeforeLastNLine(scrollHeight, lineHeight, count = 1) {

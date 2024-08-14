@@ -2,6 +2,10 @@ export class InputTracker {
   #char = '';
   #word = '';
 
+  getChar() {
+    return this.#char;
+  }
+
   hasChar() {
     return this.#char;
   }
@@ -37,5 +41,14 @@ export class InputTracker {
 
   backspaceWord() {
     this.#word = this.#word.slice(0, -1);
+  }
+
+  reset() {
+    this.#char = '';
+    this.#word = '';
+  }
+
+  isComposing() {
+    return this.getChar() !== '' && this.getWord() === '';
   }
 }

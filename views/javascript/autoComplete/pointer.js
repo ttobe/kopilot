@@ -11,7 +11,7 @@ export class Pointer {
     this.#pointer = pointer;
   }
 
-  empty() {
+  reset() {
     this.#pointer = INITIAL_POINTER;
   }
 }
