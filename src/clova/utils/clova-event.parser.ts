@@ -16,7 +16,9 @@ export class ClovaEventParser {
     const tokens: ClovaStreamToken[] = [];
 
     while (this.hasCompleteEvent()) {
-      const { singleEvent, remainingBuffer } = this.extractEventString();
+      const { singleEvent, remainingBuffer } = this.extractEventString(
+        this.buffer,
+      );
       const token = this.parseSingleEvent(singleEvent);
       if (token) {
         tokens.push(token);
@@ -30,20 +32,20 @@ export class ClovaEventParser {
     return ClovaEventParser.EVENT_PATTERN.test(this.buffer);
   }
 
-  private extractEventString(): {
+  private extractEventString(buffer: string): {
     singleEvent: string;
     remainingBuffer: string;
   } {
-    const match: RegExpExecArray | null = ClovaEventParser.EVENT_PATTERN.exec(
-      this.buffer,
-    );
+    const match: RegExpExecArray | null =
+      ClovaEventParser.EVENT_PATTERN.exec(buffer);
+
     if (!this.isValidEvent(match)) {
-      throw new Error('Failed to extract single event');
+      return { singleEvent: '', remainingBuffer: buffer };
     }
 
     const { index } = match;
     const singleEvent = match[0];
-    const remainingBuffer = this.buffer.slice(index + singleEvent.length);
+    const remainingBuffer = buffer.slice(index + singleEvent.length);
 
     return { singleEvent, remainingBuffer };
   }
@@ -65,13 +67,14 @@ export class ClovaEventParser {
           return JSON.parse(data) as ClovaChatCompletionsStreamToken;
         case 'signal':
           return JSON.parse(data) as ClovaChatCompletionsStreamSignal;
+        case 'result':
+          console.debug(data);
+          return null;
         default:
           return null;
       }
     } catch (err) {
-      console.error(
-        `Failed to parse JSON:\nstring:\n${singleEvent}\ndata:\n${data}`,
-      );
+      console.error(`Failed to parse JSON:\n${singleEvent}\n`);
     }
   }
 
