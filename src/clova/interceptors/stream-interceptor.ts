@@ -44,26 +44,38 @@ export class StreamInterceptor implements NestInterceptor {
 
           const clovaEventParser: ClovaEventParser = new ClovaEventParser();
 
-          const writableStream: Writable = new Writable({
-            write(chunk, _, callback) {
-              response.write(chunk);
-              callback();
-            },
-          });
-
           const transformStream: Transform = new Transform({
             transform(chunk, _, callback) {
               const tokens: ClovaStreamToken[] = clovaEventParser.parse(chunk);
 
               for (const token of tokens) {
                 if (token && 'message' in token) {
-                  writableStream.write(token.message.content);
+                  this.push(token.message.content);
+
                   if (token.stopReason) {
-                    writableStream.end();
+                    switch (token.stopReason) {
+                      case 'length':
+                        this.emit(
+                          'error',
+                          new Error('토큰 길이 제한을 초과했습니다.'),
+                        );
+                      default:
+                        this.push(null);
+                    }
                   }
                 }
               }
+              callback();
+            },
+          });
 
+          const writableStream: Writable = new Writable({
+            write(chunk, _, callback) {
+              response.write(chunk);
+              callback();
+            },
+            final(callback) {
+              response.end();
               callback();
             },
           });
@@ -72,10 +84,7 @@ export class StreamInterceptor implements NestInterceptor {
             .pipe(transformStream)
             .pipe(writableStream)
             .on('finish', () => response.end())
-            .on('error', (err) => {
-              console.error(err);
-              response.end();
-            });
+            .on('error', () => response.end());
 
           readableStream.on('error', (err) => {
             console.error(err);
@@ -84,6 +93,7 @@ export class StreamInterceptor implements NestInterceptor {
 
           transformStream.on('error', (err) => {
             console.error(err);
+            response.write(JSON.stringify({ error: err.message }));
             response.end();
           });
 
@@ -94,7 +104,7 @@ export class StreamInterceptor implements NestInterceptor {
         },
         error: (err) => {
           console.error(err);
-          response.end();
+          response.status(500).send();
         },
       });
     });

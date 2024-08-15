@@ -10,6 +10,7 @@ import { Spinner } from './spinner.js';
 const DIRECT_COMMAND = 'DIRECT_COMMAND';
 const SYNONYM = 'SYNONYM';
 const SPACE = '&nbsp;';
+const ERROR_REGEX = /{"error"\s*:\s*"([^"]*)"[^{}]*}/;
 
 export class EditorBox extends BaseComponent {
   #inputBox;
@@ -146,6 +147,9 @@ export class EditorBox extends BaseComponent {
         isFirstChunk = true;
       }
 
+      if (this.#hasStreamError(chunk)) {
+        return;
+      }
       await this.#inputBox.typeText(chunk);
 
       reader.read().then(processStream);
@@ -154,6 +158,17 @@ export class EditorBox extends BaseComponent {
     reader.read().then(processStream);
 
     this.#inputBox.show();
+  }
+
+  #hasStreamError(chunk) {
+    const match = chunk.match(ERROR_REGEX);
+    if (!match) {
+      return false;
+    }
+    this.#inputBox.enable();
+    this.#alertPopup.pop(match[1], -1);
+    DomManager.showElement(this.#applyBtn);
+    return true;
   }
 
   #makeUrl(stream) {
