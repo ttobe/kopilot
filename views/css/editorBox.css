@@ -12,7 +12,7 @@
   padding: 0.5rem;
 
   font-size: var(--font-size--medium);
-  line-height: var(--line-height--small);
+  line-height: var(--line-height--medium);
 
   border: none;
   border-radius: var(--border-radius--medium);
