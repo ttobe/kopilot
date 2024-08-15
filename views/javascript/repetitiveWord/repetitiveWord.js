@@ -31,7 +31,7 @@ export class RepetitiveWord {
           return;
         }
 
-        this.#btn.innerText = '로딩 중';
+        this.#btn.innerText = '로딩 중...';
         this.#btn.disable = true;
         const words = await this.getRepetitiveWord(text);
 
