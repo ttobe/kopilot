@@ -7,25 +7,25 @@ export class RepetitiveWord {
   #clickedElement;
   #textarea;
   #output;
-  #REPEATIVE_BTN_OPTION = '반복되는 단어';
+  #REPETITIVE_BTN_OPTION = '반복되는 단어';
   #APPLY_BTN_OPTION = '반영하기';
 
   constructor() {
     this.#popup = new RepetitiveWordPopup();
-    this.#btn = document.getElementById('repeative-btn');
+    this.#btn = document.getElementById('repetitive-btn');
     this.#textarea = document.getElementById('textarea');
     this.#output = document.getElementById('output');
 
     this.#btn.addEventListener('click', async (event) =>
-      this.setRepeativeBtnEvent(event, this.#btn.innerText),
+      this.setRepetitiveBtnEvent(event, this.#btn.innerText),
     );
   }
 
-  setRepeativeBtnEvent = async (event, mode) => {
+  setRepetitiveBtnEvent = async (event, mode) => {
     const text = this.#textarea.value;
 
     switch (mode) {
-      case this.#REPEATIVE_BTN_OPTION:
+      case this.#REPETITIVE_BTN_OPTION:
         if (text.length < 200) {
           this.#popup.denyPopup();
           return;
@@ -42,7 +42,7 @@ export class RepetitiveWord {
 
       case this.#APPLY_BTN_OPTION:
         this.#textarea.value = this.#output.innerText;
-        this.#btn.innerText = this.#REPEATIVE_BTN_OPTION;
+        this.#btn.innerText = this.#REPETITIVE_BTN_OPTION;
     }
   };
 
