@@ -43,12 +43,13 @@ export class RepetitiveWordPopup {
 
   showNewWord(data, func) {
     this.#radioBtn = new RadioBtnGroup(this.#holder);
-    this.#radioBtn.addButtons(data.result, 'repetitive');
+    this.#radioBtn.addButtons(data, 'repetitive');
 
     this.#popup.set('다음 단어로 바꿔보세요.', null, () => {
       func(this.#radioBtn.getSelectedBtn());
       this.#popup.hide();
     });
+    this.#popup.show();
     this.showRadioBtn();
   }
 

@@ -77,23 +77,24 @@ export class RepetitiveWord {
       return acc.replace(regex, `<span class="highlight green">${word}</span>`);
     }, content);
 
+    result.forEach(async (data) => {
+      const alternative = await this.getWords(data);
+      localStorage.setItem(data, JSON.stringify(alternative.result));
+    });
+
     this.#output.innerHTML = content;
 
     this.#output.querySelectorAll('.highlight.green').forEach((element) => {
       element.addEventListener('click', async (event) => {
-        this.#popup.showLoading(event, '대체어를 불러오는 중입니다...');
         this.#clickedElement = event.target;
-        const data = await this.getWords(event.target);
-        this.#popup.showNewWord(data, this.updateSelectedValue);
+        const data = localStorage.getItem(event.target.innerText);
+        this.#popup.showNewWord(JSON.parse(data), this.updateSelectedValue);
       });
     });
   }
 
-  getWords = async (target) => {
-    const clickedElement = target;
-    const word = clickedElement.innerText;
-
-    const url = 'http://localhost:3000/clova/partial-modification';
+  getWords = async (word) => {
+    const url = `${window.kopilotConfig.API_BASE_URL}/clova/partial-modification`;
     const body = JSON.stringify({
       input: word,
       command: 'SYNONYM',
