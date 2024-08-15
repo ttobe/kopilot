@@ -5,5 +5,4 @@ import {
 
 export type ClovaStreamToken =
   | ClovaChatCompletionsStreamToken
-  | ClovaChatCompletionsStreamSignal
-  | null;
+  | ClovaChatCompletionsStreamSignal;
