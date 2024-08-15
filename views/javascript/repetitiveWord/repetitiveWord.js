@@ -35,7 +35,7 @@ export class RepetitiveWord {
         this.#btn.disable = true;
         const words = await this.getRepetitiveWord(text);
 
-        this.showWord(words);
+        await this.showWord(words);
 
         this.#btn.innerText = this.#APPLY_BTN_OPTION;
         break;
@@ -70,17 +70,23 @@ export class RepetitiveWord {
     this.#clickedElement.replaceWith(text);
   };
 
-  showWord(result) {
+  async showWord(result) {
     let content = this.#output.innerHTML;
-    content = result.reduce((acc, word) => {
-      const regex = new RegExp(`(${word})`, 'g');
-      return acc.replace(regex, `<span class="highlight green">${word}</span>`);
-    }, content);
 
-    result.forEach(async (data) => {
+    for (const data of result) {
       const alternative = await this.getWords(data);
-      localStorage.setItem(data, JSON.stringify(alternative.result));
-    });
+      const result = alternative.result;
+
+      if (result.length > 0) {
+        localStorage.setItem(data, JSON.stringify(result));
+
+        const regex = new RegExp(`(${data})`, 'g');
+        content = content.replace(
+          regex,
+          `<span class="highlight green">${data}</span>`,
+        );
+      }
+    }
 
     this.#output.innerHTML = content;
 
