@@ -5,7 +5,7 @@ const DISABLE_CLASSNAME = 'disable';
 export class BaseInput extends BaseComponent {
   #delay;
 
-  constructor(holder, delay = 50) {
+  constructor(holder, delay = 20) {
     super(holder);
     this.#delay = delay;
   }
