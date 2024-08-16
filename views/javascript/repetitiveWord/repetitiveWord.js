@@ -7,45 +7,47 @@ export class RepetitiveWord {
   #clickedElement;
   #textarea;
   #output;
-  #REPEATIVE_BTN_OPTION = '반복되는 단어';
+  #REPETITIVE_BTN_OPTION = '반복되는 단어';
   #APPLY_BTN_OPTION = '반영하기';
 
   constructor() {
     this.#popup = new RepetitiveWordPopup();
-    this.#btn = document.getElementById('repeative-btn');
+    this.#btn = document.getElementById('repetitive-btn');
     this.#textarea = document.getElementById('textarea');
     this.#output = document.getElementById('output');
 
     this.#btn.addEventListener('click', async (event) =>
-      this.setRepeativeBtnEvent(event, this.#btn.innerText),
+      this.setRepetitiveBtnEvent(event, this.#btn.innerText),
     );
   }
 
-  setRepeativeBtnEvent = async (event, mode) => {
+  setRepetitiveBtnEvent = async (event, mode) => {
     const text = this.#textarea.value;
 
     switch (mode) {
-      case this.#REPEATIVE_BTN_OPTION:
+      case this.#REPETITIVE_BTN_OPTION:
         if (text.length < 200) {
           this.#popup.denyPopup();
           return;
         }
-        this.#popup.showLoading(event, '반복되는 단어를 탐지 중입니다...');
+
+        this.#btn.innerText = '로딩 중...';
+        this.#btn.disable = true;
         const words = await this.getRepetitiveWord(text);
-        this.#popup.showPopup(words, (words) => {
-          this.showWord(words);
-        });
+
+        await this.showWord(words);
+
         this.#btn.innerText = this.#APPLY_BTN_OPTION;
         break;
 
       case this.#APPLY_BTN_OPTION:
         this.#textarea.value = this.#output.innerText;
-        this.#btn.innerText = this.#REPEATIVE_BTN_OPTION;
+        this.#btn.innerText = this.#REPETITIVE_BTN_OPTION;
     }
   };
 
   getRepetitiveWord = async (sentence) => {
-    const url = `${window.kopilotConfig.API_BASE_URL}/clova/repeated-word`;
+    const url = `${window.kopilotConfig.API_BASE_URL}/clova/repetitive-word`;
     const data = {
       text: sentence,
     };
@@ -55,40 +57,50 @@ export class RepetitiveWord {
       'post',
       'json',
       JSON.stringify(data),
-      'repeated word error',
+      'repetitive word error',
     );
     return await response.json();
   };
 
   updateSelectedValue = (event) => {
-    const textNode = document.createTextNode(event.value);
-    this.#clickedElement.replaceWith(textNode);
+    const text = document.createElement('span');
+    text.classList.add('green-text');
+    text.textContent = event.value;
+
+    this.#clickedElement.replaceWith(text);
   };
 
-  showWord(result) {
+  showWord = async (result) => {
     let content = this.#output.innerHTML;
-    content = result.reduce((acc, word) => {
-      const regex = new RegExp(`(${word})`, 'g');
-      return acc.replace(regex, `<span class="highlight green">${word}</span>`);
-    }, content);
+
+    for (const data of result) {
+      const alternative = await this.getWords(data);
+      const result = alternative.result;
+
+      if (result.length > 0) {
+        localStorage.setItem(data, JSON.stringify(result));
+
+        const regex = new RegExp(`(${data})`, 'g');
+        content = content.replace(
+          regex,
+          `<span class="highlight green">${data}</span>`,
+        );
+      }
+    }
 
     this.#output.innerHTML = content;
 
     this.#output.querySelectorAll('.highlight.green').forEach((element) => {
       element.addEventListener('click', async (event) => {
-        this.#popup.showLoading(event, '대체어를 불러오는 중입니다...');
         this.#clickedElement = event.target;
-        const data = await this.getWords(event.target);
-        this.#popup.showNewWord(data, this.updateSelectedValue);
+        const data = localStorage.getItem(event.target.innerText);
+        this.#popup.showNewWord(JSON.parse(data), this.updateSelectedValue);
       });
     });
-  }
+  };
 
-  getWords = async (target) => {
-    const clickedElement = target;
-    const word = clickedElement.innerText;
-
-    const url = 'http://localhost:3000/clova/partial-modification';
+  getWords = async (word) => {
+    const url = `${window.kopilotConfig.API_BASE_URL}/clova/partial-modification`;
     const body = JSON.stringify({
       input: word,
       command: 'SYNONYM',

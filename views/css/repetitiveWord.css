@@ -2,11 +2,15 @@
   background-color: var(--highlight-green);
 }
 
-#repeative-btn {
+#repetitive-btn {
   padding: 0.5rem;
 
   font-size: var(--font-size--small);
 
   border: var(--primary-color) var(--border-size--thin) solid;
   border-radius: var(--border-radius--large);
+}
+
+.green-text {
+  color: green;
 }

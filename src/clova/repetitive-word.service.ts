@@ -11,7 +11,7 @@ export class RepetitiveWordService {
   private readonly headers: ClovaRequestHeader =
     ClovaChatCompletionsRequestHeadersForRepetitiveWord;
 
-  public async getRepeatedWord(text: string) {
+  public async getRepetitiveWord(text: string) {
     const data = ClovaRequestBodyTransformer.makeRepitiveWordCommand(text);
 
     const res: any = await axiosPost(this.apiUrl, data, this.headers);
