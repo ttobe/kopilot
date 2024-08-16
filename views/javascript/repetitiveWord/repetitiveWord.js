@@ -70,7 +70,7 @@ export class RepetitiveWord {
     this.#clickedElement.replaceWith(text);
   };
 
-  async showWord(result) {
+  showWord = async (result) => {
     let content = this.#output.innerHTML;
 
     for (const data of result) {
@@ -97,7 +97,7 @@ export class RepetitiveWord {
         this.#popup.showNewWord(JSON.parse(data), this.updateSelectedValue);
       });
     });
-  }
+  };
 
   getWords = async (word) => {
     const url = `${window.kopilotConfig.API_BASE_URL}/clova/partial-modification`;
