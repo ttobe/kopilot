@@ -13,5 +13,5 @@ jobs:
       - name: Add issue to project
         uses: actions/add-to-project@v1.0.2
         with:
-          project-url: https://github.com/orgs/kopilot/projects/1
+          project-url: https://github.com/orgs/kopilot2024/projects/1
           github-token: ${{ secrets.ADD_T0_PROJECT__PAT }}
