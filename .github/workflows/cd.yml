@@ -75,6 +75,7 @@ jobs:
             export NCP_CONTAINER_REGISTRY=${{ secrets.NCP_CONTAINER_REGISTRY }}
             export NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY }}
             export NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }}
+            export COMPOSE_FILE_PATH=${{ secrets.COMPOSE_FILE_PATH }}
             export IMAGE_NAME=${{ secrets.IMAGE_NAME }}
             export HOST_PORT=${{ secrets.HOST_PORT }}
             export CONTAINER_PORT=${{ secrets.CONTAINER_PORT }}
