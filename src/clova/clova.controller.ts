@@ -13,7 +13,7 @@ export class ClovaController {
     private readonly partialModification: PartialModificationService,
     private readonly parsedSentenceService: ParsedSentenceService,
     private readonly feedbackService: FeedbackService,
-    private readonly repeatedWordService: RepetitiveWordService,
+    private readonly repetitiveWordService: RepetitiveWordService,
   ) {}
 
   @Post('/partial-modification')
@@ -39,8 +39,8 @@ export class ClovaController {
     return this.feedbackService.getResult(tone, purpose, text);
   }
 
-  @Post('/repeated-word')
-  detectRepeatedWord(@Body('text') text: string) {
-    return this.repeatedWordService.getRepeatedWord(text);
+  @Post('/repetitive-word')
+  detectRepetitiveWord(@Body('text') text: string) {
+    return this.repetitiveWordService.getRepetitiveWord(text);
   }
 }
