@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsRequestHeadersForHCX003,
+  ClovaChatCompletionsRequestHeadersForStream,
   ClovaCompletionsRequestHeaders,
   SystemMessage,
 } from './constants';
@@ -14,7 +15,8 @@ import {
 import {
   ClovaRequestBodyTransformer,
   ClovaResponseBodyTransformer,
-  requestPost,
+  axiosPost,
+  fetchPost,
 } from './utils';
 
 @Injectable()
@@ -24,10 +26,13 @@ export class PartialModificationService {
     process.env.COMPLETIONS_ENDPOINT;
   private readonly chatCompletionsEndPoint: string =
     process.env.CHAT_COMPLETIONS_HCX003_ENDPOINT;
+
   private readonly completionsHeaders: ClovaRequestHeader =
     ClovaCompletionsRequestHeaders;
   private readonly chatCompletionsHeaders: ClovaRequestHeader =
     ClovaChatCompletionsRequestHeadersForHCX003;
+  private readonly chatCompletionsHeadersForStream: ClovaRequestHeader =
+    ClovaChatCompletionsRequestHeadersForStream;
 
   async getResult(
     input: string,
@@ -39,19 +44,25 @@ export class PartialModificationService {
       : await this.requestChatCompletions(input, command, systemMessage);
   }
 
+  async getResultForStream(
+    input: string,
+    command: CommandValue,
+    systemMessage: string | null,
+  ): Promise<any> {
+    return this.requestChatCompletionsForStream(input, command, systemMessage);
+  }
+
   private async requestCompletions(
     command: CommandValue,
     text: string,
   ): Promise<ClovaResponse> {
-    const res: any = await requestPost(
+    const { data }: any = await axiosPost(
       `${this.baseApiUrl}${this.completionsEndPoint}`,
       ClovaRequestBodyTransformer.transformIntoCompletions(command, text),
       this.completionsHeaders,
     );
 
-    return ClovaResponseBodyTransformer.transformIntoSynonymResult(
-      res.data.result,
-    );
+    return ClovaResponseBodyTransformer.transformIntoSynonymResult(data.result);
   }
 
   private async requestChatCompletions(
@@ -64,7 +75,7 @@ export class PartialModificationService {
         ? this.makeChatMessagesForDirectCommand(input, systemMessage)
         : this.makeChatMessages(input, command);
 
-    const res: any = await requestPost(
+    const { data }: any = await axiosPost(
       `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
       ClovaRequestBodyTransformer.transformIntoChatCompletions(
         command,
@@ -73,7 +84,27 @@ export class PartialModificationService {
       this.chatCompletionsHeaders,
     );
 
-    return ClovaResponseBodyTransformer.transformIntoResult(res.data.result);
+    return ClovaResponseBodyTransformer.transformIntoResult(data.result);
+  }
+
+  private async requestChatCompletionsForStream(
+    input: string,
+    command: CommandValue,
+    systemMessage: string | null,
+  ): Promise<any> {
+    const chatMessages: ChatMessage[] =
+      command === 'DIRECT_COMMAND'
+        ? this.makeChatMessagesForDirectCommand(input, systemMessage)
+        : this.makeChatMessages(input, command);
+
+    return await fetchPost(
+      `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
+      ClovaRequestBodyTransformer.transformIntoChatCompletions(
+        command,
+        chatMessages,
+      ),
+      this.chatCompletionsHeadersForStream,
+    );
   }
 
   private makeChatMessages(

@@ -5,7 +5,7 @@ import {
   ClovaChatCompletionsResponseBody,
   ClovaRequestHeader,
 } from './types';
-import { requestPost } from './utils';
+import { axiosPost } from './utils';
 
 @Injectable()
 export class ParsedSentenceService {
@@ -37,7 +37,7 @@ export class ParsedSentenceService {
       seed: 0,
     };
 
-    const res: any = await requestPost(this.apiUrl, data, this.headers);
+    const res: any = await axiosPost(this.apiUrl, data, this.headers);
 
     const body: ClovaChatCompletionsResponseBody = res.data.result;
     return body.message.content;

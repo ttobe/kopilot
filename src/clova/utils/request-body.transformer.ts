@@ -23,7 +23,7 @@ export class ClovaRequestBodyTransformer {
       case 'SYNONYM':
         return this.makeSynonym(text);
       default:
-        throw new Error('invalid command');
+        throw new Error(`invalid command: ${command}`);
     }
   }
 

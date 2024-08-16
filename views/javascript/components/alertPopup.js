@@ -7,13 +7,16 @@ export class AlertPopup extends BasePopup {
     super(holder);
   }
 
-  pop(title) {
+  pop(title, timeout = 2000) {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
 
     this.set(title, '', () => this.hide(false));
     this.show();
-    this.timeout = setTimeout(() => this.hide(false), 2000);
+
+    if (timeout >= 0) {
+      this.timeout = setTimeout(() => this.hide(false), timeout);
+    }
   }
 }

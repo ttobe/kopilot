@@ -22,26 +22,31 @@ export const Command: Record<CommandValue, CommandSpec> = {
     label: '길게 풀어서 작성',
     position: 'DEFAULT',
     length: 20,
+    stream: true,
   },
   SHORT_DESCRIPTION: {
     label: '간결하게 작성',
     position: 'DEFAULT',
     length: 40,
+    stream: true,
   },
   SUBTITLE: {
     label: '소제목 작성',
     position: 'BEFORE',
     length: 200,
+    stream: true,
   },
   SYNONYM: {
     label: '유의어 대체',
     position: 'DEFAULT',
     length: 1,
+    stream: false,
   },
   DIRECT_COMMAND: {
     label: 'AI에게 직접 명령',
     position: 'DEFAULT',
     length: 0,
+    stream: true,
   },
 };
 
@@ -50,13 +55,15 @@ interface ModificationOption {
   label: CommandLabel;
   position: CommandPosition;
   length: number;
+  stream: boolean;
 }
 
 export const MODIFICATION_OPTIONS: ModificationOption[] = Object.entries(
   Command,
-).map(([key, { label, position, length }]) => ({
+).map(([key, { label, position, length, stream }]) => ({
   value: key as CommandValue,
   label,
   position,
   length,
+  stream,
 }));

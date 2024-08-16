@@ -17,7 +17,7 @@
 }
 
 #output-popup .content {
-  line-height: 1.4rem;
+  line-height: var(--line-height--medium-high);
 }
 
 #output-popup .radio-btn-group input[type='radio'] {

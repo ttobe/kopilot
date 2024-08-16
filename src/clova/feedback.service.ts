@@ -10,7 +10,7 @@ import {
   ClovaRequestHeader,
 } from './types';
 import { Feedback } from './types/feedback/feedback.type';
-import { ClovaResponseBodyTransformer, requestPost } from './utils';
+import { ClovaResponseBodyTransformer, axiosPost } from './utils';
 
 @Injectable()
 export class FeedbackService {
@@ -38,7 +38,7 @@ export class FeedbackService {
       purpose,
       text,
     );
-    const res: any = await requestPost(
+    const res: any = await axiosPost(
       `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
       this.makeChatCompletionsData(chatMessages),
       this.chatCompletionsHeaders,
