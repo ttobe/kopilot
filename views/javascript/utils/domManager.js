@@ -38,4 +38,8 @@ export class DomManager {
   static calculateLineHeight(element) {
     return parseFloat(window.getComputedStyle(element).lineHeight) || 0;
   }
+
+  static overrideClickEvent(element, callback) {
+    return (element.onclick = callback);
+  }
 }
