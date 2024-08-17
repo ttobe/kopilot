@@ -82,10 +82,10 @@ export class EditorBox extends BaseComponent {
     super.show();
 
     DomManager.showElement(this.#aiBtn);
-    this.#aiBtn.addEventListener('click', () => {
+    this.#aiBtn.onclick = () => {
       this.#inputBox.hide();
       this.#request(true);
-    });
+    };
   }
 
   async #request(stream) {
