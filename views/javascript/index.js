@@ -57,7 +57,7 @@ feedbackBtn.addEventListener('click', () => {
   if (text.length > 3000) {
     alertPopup.pop('3000자 이상이면 피드백할 수 없습니다.');
   } else if (text.length < 300) {
-    alertPopup.pop('앞 뒤 공백 제외 300자 미만이면 피드백할 수 없습니다.');
+    alertPopup.pop('300자 미만이면 피드백할 수 없습니다.');
   } else {
     feedbackPopup.show();
   }

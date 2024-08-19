@@ -6,7 +6,7 @@
       <img src='/images/question-mark.png' />
       <span class="tooltip left">
         글을 평가하는 기준이에요!<br><br>
-        
+
         내용: 정확성, 연관성, 타당성<br><br>
 
         구성: 적절성, 통일성, 일관성<br><br>
@@ -18,10 +18,8 @@
     </div>
   </div>
   <div id='feedback-content'></div>
-  <div id="feedback-bottom">
-    {{> components/button-group
-      size="medium"
-      buttons='[{"type": "default", "id": "feedback-btn", "label": "피드백"}]'
-    }}
-  </div>
+  {{> components/button-group
+    size="medium"
+    buttons='[{"type": "default", "id": "feedback-btn", "label": "피드백"}]'
+  }}
 </section>

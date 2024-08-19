@@ -59,10 +59,11 @@
 }
 
 #feedback-tip .tooltip {
-  width: 17rem;
+  width: 18rem;
   text-align: left;
   transform: translateY(-10%);
   padding: 1rem;
+  right: 150%;
 }
 
 #feedback-tip:hover .tooltip {
@@ -71,5 +72,5 @@
 }
 
 #feedback-tip .tooltip.left::after {
-  top: 10%;
+  top: 13%;
 }
