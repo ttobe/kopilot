@@ -47,3 +47,29 @@
 .section p {
   line-height: 1.6rem;
 }
+
+#feedback-tip {
+  position: relative;
+  height: 1.5rem;
+  margin-left: auto;
+}
+
+#feedback-tip > img {
+  height: 100%;
+}
+
+#feedback-tip .tooltip {
+  width: 17rem;
+  text-align: left;
+  transform: translateY(-10%);
+  padding: 1rem;
+}
+
+#feedback-tip:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+#feedback-tip .tooltip.left::after {
+  top: 10%;
+}
