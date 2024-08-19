@@ -386,6 +386,10 @@ div.white-space-pre-wrap {
   display: flex;
 }
 
+.radio-btn-group.center {
+  justify-content: center;
+}
+
 .radio-btn-group label {
   display: block;
   cursor: pointer;
