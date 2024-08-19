@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClovaChatCompletionsRequestHeadersForRepetitiveWord } from '../constants';
 import { ClovaRequestHeader } from '../types';
 import { ClovaRequestBodyTransformer, axiosPost } from '../utils';
@@ -11,8 +11,14 @@ export class RepetitiveWordService {
   private readonly headers: ClovaRequestHeader =
     ClovaChatCompletionsRequestHeadersForRepetitiveWord;
 
+  constructor(
+    @Inject(ClovaRequestBodyTransformer)
+    private readonly clovaRequestBodyTransformer,
+  ) {}
+
   public async getRepetitiveWord(text: string) {
-    const data = ClovaRequestBodyTransformer.makeRepetitiveWordCommand(text);
+    const data =
+      this.clovaRequestBodyTransformer.makeRepetitiveWordCommand(text);
 
     const res: any = await axiosPost(this.apiUrl, data, this.headers);
     return res.data.result.message.content
