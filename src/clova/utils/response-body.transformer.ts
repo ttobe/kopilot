@@ -1,9 +1,4 @@
-import {
-  ClovaChatCompletionsResponseBody,
-  ClovaCompletionsResponseBody,
-  ClovaResponse,
-} from '../types';
-import { Feedback } from '../types/feedback/feedback.type';
+import { ClovaChatCompletionsResponseBody, ClovaResponse } from '../types';
 
 export class ClovaResponseBodyTransformer {
   static transformIntoResult(
@@ -13,21 +8,19 @@ export class ClovaResponseBodyTransformer {
   }
 
   static transformIntoSynonymResult(
-    body: ClovaCompletionsResponseBody,
+    body: ClovaChatCompletionsResponseBody,
   ): ClovaResponse {
-    const regex: RegExp = /[1-5]{1}\)\s([가-힣\s]+)/g;
-
-    return {
-      result: [...body.text.matchAll(regex)].reduce((acc, curr) => {
-        acc.push(curr[1].trim());
-        return acc;
-      }, []),
-    };
+    const content = body.message.content;
+    try {
+      return { result: JSON.parse(content) };
+    } catch (err) {
+      return this.handleUnexpectedSynonymResult(content);
+    }
   }
 
-  static transformIntoFeedBackResult(
+  static transformIntoFeedbackResult(
     body: ClovaChatCompletionsResponseBody,
-  ): Feedback[] {
+  ): ClovaResponse {
     const sections = body.message.content.trim().split(/\n\n/);
     const result = sections
       .map((section) => {
@@ -48,5 +41,19 @@ export class ClovaResponseBodyTransformer {
       .filter((item) => item !== null);
 
     return result;
+  }
+
+  private static handleUnexpectedSynonymResult(content: string): ClovaResponse {
+    if (content.includes('-')) {
+      return { result: this.parseSynonymResultWithHyphen(content) };
+    }
+    throw Error(`Failed to parse synonyms:\n, ${content}`);
+  }
+
+  private static parseSynonymResultWithHyphen(content: string): string[] {
+    return content
+      .trim()
+      .split('\n')
+      .map((item) => item.trim().replace(/^- /, ''));
   }
 }
