@@ -1,4 +1,8 @@
-import { ClovaChatCompletionsResponseBody, ClovaResponse } from '../types';
+import {
+  ClovaChatCompletionsResponseBody,
+  ClovaResponse,
+  Synonyms,
+} from '../types';
 
 export class ClovaResponseBodyTransformer {
   static transformIntoResult(
@@ -9,10 +13,10 @@ export class ClovaResponseBodyTransformer {
 
   static transformIntoSynonymResult(
     body: ClovaChatCompletionsResponseBody,
-  ): ClovaResponse {
+  ): Synonyms {
     const content = body.message.content;
     try {
-      return { result: JSON.parse(content) };
+      return JSON.parse(content);
     } catch (err) {
       return this.handleUnexpectedSynonymResult(content);
     }
@@ -43,9 +47,9 @@ export class ClovaResponseBodyTransformer {
     return result;
   }
 
-  private static handleUnexpectedSynonymResult(content: string): ClovaResponse {
+  private static handleUnexpectedSynonymResult(content: string): Synonyms {
     if (content.includes('-')) {
-      return { result: this.parseSynonymResultWithHyphen(content) };
+      return this.parseSynonymResultWithHyphen(content);
     }
     throw Error(`Failed to parse synonyms:\n, ${content}`);
   }

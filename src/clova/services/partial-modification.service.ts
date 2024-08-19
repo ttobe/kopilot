@@ -55,11 +55,11 @@ export class PartialModificationService {
     input: string,
     command: CommandValue,
   ): Promise<ClovaResponse> {
-    const result: Synonyms | undefined =
+    const cachedResult: Synonyms | undefined =
       await this.redisManager.get<Synonyms>(input);
-    if (result) {
-      this.redisManager.set<Synonyms>(input, result);
-      return { result };
+    if (cachedResult) {
+      this.redisManager.set<Synonyms>(input, cachedResult);
+      return { result: cachedResult };
     }
     const chatMessages: ChatMessage[] = this.makeChatMessagesForDefault(
       input,
@@ -75,12 +75,12 @@ export class PartialModificationService {
       this.chatCompletionsHeaders,
     );
 
-    const response: ClovaResponse =
+    const synonyms: Synonyms =
       ClovaResponseBodyTransformer.transformIntoSynonymResult(data.result);
-    if ('result' in response && response.result.length) {
-      this.redisManager.set(input, response.result);
+    if (synonyms.length) {
+      this.redisManager.set(input, synonyms);
     }
-    return response;
+    return { result: synonyms };
   }
 
   private async requestChatCompletionsForStream(
