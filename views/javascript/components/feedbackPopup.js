@@ -72,13 +72,20 @@ export class FeedbackPopup extends BasePopup {
     });
   }
 
+  #getKoreanScore(score) {
+    if (score) {
+      return this.#scoreFeedbackMap[score[0]] || score;
+    }
+    return score;
+  }
+
   #createSection(item) {
     const { title, score, description } = item;
     const section = document.createElement('div');
-    const feedback = this.#scoreFeedbackMap[score] || score;
+    const koreanScore = this.#getKoreanScore(score);
     section.className = 'section';
     section.innerHTML = `
-      <h3>${title}: <span class="score">${feedback}</span></h3>
+      <h3>${title}: <span class="score">${koreanScore}</span></h3>
       <p>${description}</p>
     `;
     return section;
