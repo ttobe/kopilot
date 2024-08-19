@@ -1,32 +1,32 @@
+import { Inject, Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsResponseBody,
   ClovaResponse,
   Synonyms,
 } from '../types';
+import { ClovaResponseBodyParser } from './response-body.parser';
 
-const HYPHEN: string = '-';
-const LEFT_BRACE: string = '[';
-const BRACE_REGEXP: RegExp = /\[([^\]]+)\]/;
-
+@Injectable()
 export class ClovaResponseBodyTransformer {
-  static transformIntoResult(
-    body: ClovaChatCompletionsResponseBody,
-  ): ClovaResponse {
+  constructor(
+    @Inject(ClovaResponseBodyParser)
+    private readonly clovaResponseBodyParser,
+  ) {}
+
+  transformIntoResult(body: ClovaChatCompletionsResponseBody): ClovaResponse {
     return { result: body.message.content };
   }
 
-  static transformIntoSynonymResult(
-    body: ClovaChatCompletionsResponseBody,
-  ): Synonyms {
+  transformIntoSynonymResult(body: ClovaChatCompletionsResponseBody): Synonyms {
     const content = body.message.content;
     try {
       return JSON.parse(content);
     } catch (err) {
-      return this.handleUnexpectedSynonymResult(content);
+      return this.clovaResponseBodyParser.parseUnexpectedStringArray(content);
     }
   }
 
-  static transformIntoFeedbackResult(
+  transformIntoFeedbackResult(
     body: ClovaChatCompletionsResponseBody,
   ): ClovaResponse {
     const sections = body.message.content.trim().split(/\n\n/);
@@ -49,55 +49,5 @@ export class ClovaResponseBodyTransformer {
       .filter((item) => item !== null);
 
     return result;
-  }
-
-  private static handleUnexpectedSynonymResult(content: string): Synonyms {
-    console.debug(content);
-    try {
-      if (content.includes(HYPHEN) && content.includes(LEFT_BRACE)) {
-        return this.parseSynonymResultWithHyphenAndBrace(content);
-      }
-      if (content.includes(HYPHEN)) {
-        return this.parseSynonymResultWithHyphen(content);
-      }
-      if (content.includes(LEFT_BRACE)) {
-        return this.parseSynonymResultWithoutQuotationMark(content);
-      }
-      throw Error(content);
-    } catch (err) {
-      throw Error(`Failed to parse synonyms:\n ${err.message}`);
-    }
-  }
-
-  private static parseSynonymResultWithHyphenAndBrace(
-    content: string,
-  ): string[] {
-    const match: RegExpMatchArray = content.match(BRACE_REGEXP);
-    if (match) {
-      try {
-        return JSON.parse(match[0].slice(1, -1));
-      } catch (err) {
-        return this.handleUnexpectedSynonymResult(match[0]);
-      }
-    }
-    throw Error(content);
-  }
-
-  private static parseSynonymResultWithHyphen(content: string): string[] {
-    return content
-      .trim()
-      .split(/(\n|,)/g)
-      .map((item) => item.trim().replace(/(- |,)/, ''))
-      .filter((item) => item);
-  }
-
-  private static parseSynonymResultWithoutQuotationMark(
-    content: string,
-  ): string[] {
-    return content
-      .replace(/(\[|\])/g, '')
-      .split(',')
-      .map((item) => item.trim())
-      .filter((item) => item);
   }
 }
