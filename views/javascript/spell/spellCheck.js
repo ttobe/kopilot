@@ -19,14 +19,21 @@ class SpellCheck {
       const token = error.token;
       const suggestions = error.suggestions.join(', ');
 
-      const tokenIndex = content.indexOf(token, index);
-      if (tokenIndex !== -1) {
-        const span = `<span class="highlight red" data-suggestions="${suggestions}">${token}</span>`;
-        content =
-          content.substring(0, tokenIndex) +
-          span +
-          content.substring(tokenIndex + token.length);
-        index = tokenIndex + span.length + 1;
+      const span = `<span class="highlight red" data-suggestions="${suggestions}">${token}</span>`;
+
+      let tokenIndex = content.indexOf(token, index);
+
+      while (tokenIndex !== -1) {
+        if (this.#isToken(content, tokenIndex, token)) {
+          content =
+            content.substring(0, tokenIndex) +
+            span +
+            content.substring(tokenIndex + token.length);
+          index = tokenIndex + span.length + 1;
+          break;
+        }
+
+        tokenIndex = content.indexOf(token, tokenIndex + 1);
       }
     });
 
@@ -34,6 +41,16 @@ class SpellCheck {
     this.#output.innerHTML = content.replace(/\n/g, '<br>');
     this.#setSpellEvent();
     this.#updateErrorCount();
+  }
+
+  #isToken(content, tokenIndex, token) {
+    const nextChar = this.#getNextChar(content, tokenIndex, token);
+    return !nextChar || !/[a-zA-Z가-힣0-9]/.test(nextChar);
+  }
+
+  #getNextChar(content, tokenIndex, token) {
+    const nextCharIndex = tokenIndex + token.length;
+    return nextCharIndex < content.length ? content[nextCharIndex] : null;
   }
 
   #setSpellEvent() {
