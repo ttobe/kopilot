@@ -26,7 +26,12 @@ export class AutoCompletion {
   }
 
   activate(pointer) {
-    this.#showCursorBox(pointer);
+    this.#pointer.set(pointer);
+    this.#cursorBox.show(this.#getEnding());
+  }
+
+  deactivate() {
+    this.#cursorBox.empty();
   }
 
   reset() {
@@ -44,23 +49,32 @@ export class AutoCompletion {
       return;
     }
 
-    const pointer = this.getPointer();
+    const pointer = this.#computePointer(ending);
 
     if (!this.#inputTracker.isComposing()) {
-      this.emptyChar();
+      this.emptyPhoneme();
       removeIncompleteCallback(pointer);
     }
 
-    insertPhraseCallback(pointer, ending);
-    setNextCursorCallback(pointer, ending);
+    this.#executeCallbacks(
+      pointer,
+      ending,
+      insertPhraseCallback,
+      setNextCursorCallback,
+    );
     this.reset();
+  }
+
+  #executeCallbacks(pointer, ending, ...callbacks) {
+    callbacks.forEach((callback) => callback(pointer, ending));
   }
 
   #getEnding() {
     return (
       this.#getEndingWithWord() ??
-      this.#getEndingWithLastChar() ??
-      this.#getEndingWithChar()
+      this.#getEndingWithLastCharacter() ??
+      this.#getEndingWithWordAndPhoneme() ??
+      this.#getEndingWithPhoneme()
     );
   }
 
@@ -68,12 +82,30 @@ export class AutoCompletion {
     return this.#endingMap[this.#inputTracker.getWord()];
   }
 
-  #getEndingWithLastChar() {
-    return this.#endingMap[this.#inputTracker.getLastChar()];
+  #getEndingWithLastCharacter() {
+    return this.#endingMap[this.#inputTracker.getLastCharacter()];
   }
 
-  #getEndingWithChar() {
-    return this.#endingMap[this.#inputTracker.getChar()];
+  #getEndingWithWordAndPhoneme() {
+    return this.#endingMap[
+      `${this.#inputTracker.getWord()}${this.#inputTracker.getPhoneme()}`
+    ];
+  }
+
+  #getEndingWithPhoneme() {
+    return this.#endingMap[this.#inputTracker.getPhoneme()];
+  }
+
+  #computePointer(ending) {
+    return (
+      this.#pointer.get() -
+      !this.#inputTracker.isComposing() +
+      this.#hasComposingCharacter(ending)
+    );
+  }
+
+  #hasComposingCharacter(ending) {
+    return ending === this.#getEndingWithWordAndPhoneme();
   }
 
   setEndingType(selected) {
@@ -85,24 +117,24 @@ export class AutoCompletion {
           : plainEndingMap;
   }
 
-  hasChar() {
-    return this.#inputTracker.hasChar();
+  hasPhoneme() {
+    return this.#inputTracker.hasPhoneme();
   }
 
-  emptyChar() {
-    this.#inputTracker.emptyChar();
+  emptyPhoneme() {
+    this.#inputTracker.emptyPhoneme();
   }
 
-  updateChar(char) {
-    this.#inputTracker.updateChar(char);
+  updatePhoneme(phoneme) {
+    this.#inputTracker.updatePhoneme(phoneme);
   }
 
-  backspaceChar() {
-    this.#inputTracker.backspaceChar();
+  backspacePhoneme() {
+    this.#inputTracker.backspacePhoneme();
   }
 
-  updateWord(char) {
-    this.#inputTracker.updateWord(char);
+  updateWord() {
+    this.#inputTracker.updateWord();
   }
 
   backspaceWord() {
@@ -111,15 +143,6 @@ export class AutoCompletion {
     if (!this.canActivate()) {
       this.#cursorBox.empty();
     }
-  }
-
-  getPointer() {
-    return this.#pointer.get() - !this.#inputTracker.isComposing();
-  }
-
-  #showCursorBox(pointer) {
-    this.#pointer.set(pointer);
-    this.#cursorBox.show(this.#getEnding());
   }
 
   #emptyBuffers() {

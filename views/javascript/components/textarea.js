@@ -92,7 +92,7 @@ export class Textarea extends BaseComponent {
     }
 
     if (!this.#autoCompletion.canActivate()) {
-      this.#autoCompletion.reset();
+      this.#autoCompletion.deactivate();
     }
 
     if (code === KEY.BACKSPACE) {
@@ -100,7 +100,7 @@ export class Textarea extends BaseComponent {
       return;
     }
 
-    if (Textarea.isCursorMoved(code, key)) {
+    if (code === KEY.SPACE || Textarea.isCursorMoved(code, key)) {
       this.#autoCompletion.reset();
       return;
     }
@@ -125,8 +125,8 @@ export class Textarea extends BaseComponent {
   }
 
   #handleBackspace() {
-    if (this.#autoCompletion.hasChar()) {
-      this.#autoCompletion.backspaceChar();
+    if (this.#autoCompletion.hasPhoneme()) {
+      this.#autoCompletion.backspacePhoneme();
       return;
     }
     this.#autoCompletion.backspaceWord();
@@ -214,18 +214,26 @@ export class Textarea extends BaseComponent {
 
   #addIMEEventListener() {
     this.holder.addEventListener('compositionstart', () =>
-      this.#autoCompletion.emptyChar(),
+      this.#autoCompletion.emptyPhoneme(),
     );
+
     this.holder.addEventListener('compositionupdate', (event) => {
-      this.#autoCompletion.updateChar(event.data);
+      this.#autoCompletion.updatePhoneme(event.data);
 
       if (this.#autoCompletion.canActivate()) {
         this.#autoCompletion.activate(this.#getCursorPointer() + 1);
+      } else {
+        this.#autoCompletion.deactivate();
       }
     });
-    this.holder.addEventListener('compositionend', (event) =>
-      this.#autoCompletion.updateWord(event.data),
-    );
+
+    this.holder.addEventListener('compositionend', () => {
+      this.#autoCompletion.updateWord();
+
+      if (this.#autoCompletion.canActivate()) {
+        this.#autoCompletion.activate(this.#getCursorPointer());
+      }
+    });
   }
 
   #observeValueChange() {

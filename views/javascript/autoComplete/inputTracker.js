@@ -1,42 +1,37 @@
 export class InputTracker {
-  #char = '';
+  #phoneme = '';
   #word = '';
 
-  getChar() {
-    return this.#char;
+  getPhoneme() {
+    return this.#phoneme;
   }
 
-  hasChar() {
-    return this.#char;
+  hasPhoneme() {
+    return this.#phoneme;
   }
 
-  emptyChar() {
-    this.#char = '';
+  emptyPhoneme() {
+    this.#phoneme = '';
   }
 
-  updateChar(char) {
-    this.#char = char;
+  updatePhoneme(phoneme) {
+    this.#phoneme = phoneme;
   }
 
-  backspaceChar() {
-    this.#char = this.#char.slice(0, -1);
+  backspacePhoneme() {
+    this.#phoneme = this.#phoneme.slice(0, -1);
+  }
+
+  getLastCharacter() {
+    return this.#word.slice(-1) || null;
   }
 
   getWord() {
     return this.#word;
   }
 
-  emptyWord() {
-    this.#word = '';
-  }
-
-  updateWord(char) {
-    this.#word += char;
-    this.emptyChar();
-  }
-
-  getLastChar() {
-    return this.#word.slice(-1) || null;
+  updateWord() {
+    this.#word += this.#phoneme;
   }
 
   backspaceWord() {
@@ -44,11 +39,11 @@ export class InputTracker {
   }
 
   reset() {
-    this.#char = '';
+    this.#phoneme = '';
     this.#word = '';
   }
 
   isComposing() {
-    return this.getChar() !== '' && this.getWord() === '';
+    return this.getPhoneme() !== '' && this.getWord() === '';
   }
 }
