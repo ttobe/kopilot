@@ -7,6 +7,7 @@ class SpellCheck {
   #output = document.getElementById('output');
   #textarea = document.getElementById('textarea');
   #errorCount = document.getElementById('error-count');
+  #tokenReg = /[a-zA-Z가-힣0-9]/;
 
   setSpellHighlight() {
     let index = 0;
@@ -15,18 +16,25 @@ class SpellCheck {
       return;
     }
 
-    this.#spellErrors.forEach((error) => {
-      const token = error.token;
-      const suggestions = error.suggestions.join(', ');
+    this.#spellErrors.forEach((spellError) => {
+      const token = spellError.token;
+      const suggestions = spellError.suggestions.join(', ');
 
-      const tokenIndex = content.indexOf(token, index);
-      if (tokenIndex !== -1) {
-        const span = `<span class="highlight red" data-suggestions="${suggestions}">${token}</span>`;
-        content =
-          content.substring(0, tokenIndex) +
-          span +
-          content.substring(tokenIndex + token.length);
-        index = tokenIndex + span.length + 1;
+      const span = `<span class="highlight red" data-suggestions="${suggestions}">${token}</span>`;
+
+      let tokenIndex = content.indexOf(token, index);
+
+      while (tokenIndex !== -1) {
+        if (this.#isToken(content, tokenIndex, token)) {
+          content =
+            content.substring(0, tokenIndex) +
+            span +
+            content.substring(tokenIndex + token.length);
+          index = tokenIndex + span.length + 1;
+          break;
+        }
+
+        tokenIndex = content.indexOf(token, tokenIndex + 1);
       }
     });
 
@@ -34,6 +42,16 @@ class SpellCheck {
     this.#output.innerHTML = content.replace(/\n/g, '<br>');
     this.#setSpellEvent();
     this.#updateErrorCount();
+  }
+
+  #isToken(content, tokenIndex, token) {
+    const nextChar = this.#getNextChar(content, tokenIndex, token);
+    return !nextChar || !this.#tokenReg.test(nextChar);
+  }
+
+  #getNextChar(content, tokenIndex, token) {
+    const nextCharIndex = tokenIndex + token.length;
+    return nextCharIndex < content.length ? content[nextCharIndex] : null;
   }
 
   #setSpellEvent() {
