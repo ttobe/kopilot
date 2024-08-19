@@ -155,6 +155,10 @@ span.em {
   color: var(--primary-color);
 }
 
+div.white-space-pre-wrap {
+  white-space: pre-wrap;
+}
+
 .title {
   display: flex;
   align-items: center;
