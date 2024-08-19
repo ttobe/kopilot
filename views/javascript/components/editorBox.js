@@ -69,7 +69,6 @@ export class EditorBox extends BaseComponent {
       return;
     }
 
-    this.#spinner.show();
     this.#request(stream);
     super.show();
   }
@@ -83,10 +82,16 @@ export class EditorBox extends BaseComponent {
     super.show();
 
     DomManager.showElement(this.#aiBtn);
-    this.#aiBtn.addEventListener('click', () => this.#request(true));
+    DomManager.overrideClickEvent(this.#aiBtn, () => {
+      this.#inputBox.hide();
+      this.#request(true);
+    });
   }
 
   async #request(stream) {
+    this.#spinner.show();
+    DomManager.hideElement(this.#aiBtn);
+
     const url = this.#makeUrl(stream);
     const body = JSON.stringify({
       input: this.#input,
@@ -102,10 +107,7 @@ export class EditorBox extends BaseComponent {
       'partial modification error',
     );
 
-    if (this.#command === DIRECT_COMMAND) {
-      this.#inputBox.initializeValue();
-      DomManager.hideElement(this.#aiBtn);
-    }
+    this.#inputBox.initializeValue();
 
     if (stream) {
       this.#handleStream(response.body.getReader());

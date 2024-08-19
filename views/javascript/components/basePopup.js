@@ -37,11 +37,11 @@ export class BasePopup extends BaseComponent {
       this.content.innerHTML = content;
     }
 
-    this.okBtn.onclick = okCallback;
+    DomManager.overrideClickEvent(this.okBtn, okCallback);
     if (cancelCallback === null) {
       return;
     }
-    this.cancelBtn.onclick = cancelCallback;
+    DomManager.overrideClickEvent(this.cancelBtn, cancelCallback);
   }
 
   #init() {
