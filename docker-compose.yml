@@ -14,4 +14,4 @@ services:
     container_name: redis
     image: redis:latest
     expose:
-      - 6379
+      - ${REDIS_PORT}
