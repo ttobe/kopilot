@@ -10,28 +10,17 @@ import {
   ChatMessage,
   ChatRole,
   ClovaChatCompletionsRequestBody,
-  ClovaCompletionsRequestBody,
   CommandValue,
 } from '../types';
 
 export class ClovaRequestBodyTransformer {
-  static transformIntoCompletions(
-    command: CommandValue,
-    text: string,
-  ): ClovaCompletionsRequestBody {
-    switch (command) {
-      case 'SYNONYM':
-        return this.makeSynonym(text);
-      default:
-        throw new Error(`invalid command: ${command}`);
-    }
-  }
-
   static transformIntoChatCompletions(
     command: CommandValue,
     chatMessages: ChatMessage[],
   ): ClovaChatCompletionsRequestBody {
     switch (command) {
+      case 'SYNONYM':
+        return this.makeSynonym(chatMessages);
       case 'LONG_DESCRIPTION':
         return this.makeLongDescription(chatMessages);
       case 'SHORT_DESCRIPTION':
@@ -45,8 +34,10 @@ export class ClovaRequestBodyTransformer {
     }
   }
 
-  private static makeSynonym(text: string): ClovaCompletionsRequestBody {
-    return { ...SYNONYM_DETAILS, text };
+  private static makeSynonym(
+    messages: ChatMessage[],
+  ): ClovaChatCompletionsRequestBody {
+    return { ...SYNONYM_DETAILS, messages };
   }
 
   private static makeLongDescription(
@@ -73,7 +64,7 @@ export class ClovaRequestBodyTransformer {
     return { ...DIRECT_COMMAND_DETAILS, messages };
   }
 
-  public static makeRepitiveWordCommand(
+  public static makeRepetitiveWordCommand(
     text: string,
   ): ClovaChatCompletionsRequestBody {
     const messages = [
