@@ -1,47 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { RedisManager } from 'src/common/cache/redis/redis.manager';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsRequestHeadersForHCX003,
   ClovaChatCompletionsRequestHeadersForStream,
-  ClovaCompletionsRequestHeaders,
   SystemMessage,
-} from './constants';
+} from '../constants';
 import {
   ChatMessage,
   ChatRole,
   ClovaRequestHeader,
   ClovaResponse,
   CommandValue,
-} from './types';
+  Synonyms,
+} from '../types';
 import {
   ClovaRequestBodyTransformer,
   ClovaResponseBodyTransformer,
   axiosPost,
   fetchPost,
-} from './utils';
+} from '../utils';
 
 @Injectable()
 export class PartialModificationService {
   private readonly baseApiUrl: string = process.env.CLOVASTUDIO_API_BASE_URL;
-  private readonly completionsEndPoint: string =
-    process.env.COMPLETIONS_ENDPOINT;
   private readonly chatCompletionsEndPoint: string =
     process.env.CHAT_COMPLETIONS_HCX003_ENDPOINT;
 
-  private readonly completionsHeaders: ClovaRequestHeader =
-    ClovaCompletionsRequestHeaders;
   private readonly chatCompletionsHeaders: ClovaRequestHeader =
     ClovaChatCompletionsRequestHeadersForHCX003;
   private readonly chatCompletionsHeadersForStream: ClovaRequestHeader =
     ClovaChatCompletionsRequestHeadersForStream;
 
+  constructor(
+    @Inject(RedisManager)
+    private readonly redisManager: RedisManager,
+  ) {}
+
   async getResult(
     input: string,
     command: CommandValue,
-    systemMessage: string | null,
   ): Promise<ClovaResponse> {
-    return command === 'SYNONYM'
-      ? await this.requestCompletions(command, input)
-      : await this.requestChatCompletions(input, command, systemMessage);
+    return await this.requestChatCompletions(input, command);
   }
 
   async getResultForStream(
@@ -52,28 +51,20 @@ export class PartialModificationService {
     return this.requestChatCompletionsForStream(input, command, systemMessage);
   }
 
-  private async requestCompletions(
-    command: CommandValue,
-    text: string,
-  ): Promise<ClovaResponse> {
-    const { data }: any = await axiosPost(
-      `${this.baseApiUrl}${this.completionsEndPoint}`,
-      ClovaRequestBodyTransformer.transformIntoCompletions(command, text),
-      this.completionsHeaders,
-    );
-
-    return ClovaResponseBodyTransformer.transformIntoSynonymResult(data.result);
-  }
-
   private async requestChatCompletions(
     input: string,
     command: CommandValue,
-    systemMessage: string | null,
   ): Promise<ClovaResponse> {
-    const chatMessages: ChatMessage[] =
-      command === 'DIRECT_COMMAND'
-        ? this.makeChatMessagesForDirectCommand(input, systemMessage)
-        : this.makeChatMessages(input, command);
+    const result: Synonyms | undefined =
+      await this.redisManager.get<Synonyms>(input);
+    if (result) {
+      this.redisManager.set<Synonyms>(input, result);
+      return { result };
+    }
+    const chatMessages: ChatMessage[] = this.makeChatMessagesForDefault(
+      input,
+      command,
+    );
 
     const { data }: any = await axiosPost(
       `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
@@ -84,7 +75,12 @@ export class PartialModificationService {
       this.chatCompletionsHeaders,
     );
 
-    return ClovaResponseBodyTransformer.transformIntoResult(data.result);
+    const response: ClovaResponse =
+      ClovaResponseBodyTransformer.transformIntoSynonymResult(data.result);
+    if ('result' in response && response.result.length) {
+      this.redisManager.set(input, response.result);
+    }
+    return response;
   }
 
   private async requestChatCompletionsForStream(
@@ -92,10 +88,11 @@ export class PartialModificationService {
     command: CommandValue,
     systemMessage: string | null,
   ): Promise<any> {
-    const chatMessages: ChatMessage[] =
-      command === 'DIRECT_COMMAND'
-        ? this.makeChatMessagesForDirectCommand(input, systemMessage)
-        : this.makeChatMessages(input, command);
+    const chatMessages: ChatMessage[] = this.makeChatMessages(
+      input,
+      command,
+      systemMessage,
+    );
 
     return await fetchPost(
       `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
@@ -108,6 +105,16 @@ export class PartialModificationService {
   }
 
   private makeChatMessages(
+    input: string,
+    command: CommandValue,
+    systemMessage: string | null,
+  ): ChatMessage[] {
+    return command === 'DIRECT_COMMAND'
+      ? this.makeChatMessagesForDirectCommand(input, systemMessage)
+      : this.makeChatMessagesForDefault(input, command);
+  }
+
+  private makeChatMessagesForDefault(
     selectedText: string,
     selectedButton: string,
   ): ChatMessage[] {
