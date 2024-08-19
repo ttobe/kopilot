@@ -7,6 +7,7 @@ class SpellCheck {
   #output = document.getElementById('output');
   #textarea = document.getElementById('textarea');
   #errorCount = document.getElementById('error-count');
+  #tokenReg = /[a-zA-Z가-힣0-9]/;
 
   setSpellHighlight() {
     let index = 0;
@@ -15,9 +16,9 @@ class SpellCheck {
       return;
     }
 
-    this.#spellErrors.forEach((error) => {
-      const token = error.token;
-      const suggestions = error.suggestions.join(', ');
+    this.#spellErrors.forEach((spellError) => {
+      const token = spellError.token;
+      const suggestions = spellError.suggestions.join(', ');
 
       const span = `<span class="highlight red" data-suggestions="${suggestions}">${token}</span>`;
 
@@ -45,7 +46,7 @@ class SpellCheck {
 
   #isToken(content, tokenIndex, token) {
     const nextChar = this.#getNextChar(content, tokenIndex, token);
-    return !nextChar || !/[a-zA-Z가-힣0-9]/.test(nextChar);
+    return !nextChar || !this.#tokenReg.test(nextChar);
   }
 
   #getNextChar(content, tokenIndex, token) {
