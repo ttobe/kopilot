@@ -49,20 +49,41 @@ export class AutoCompletion {
       return;
     }
 
-    const pointer = this.#computePointer(ending);
-
     if (!this.#inputTracker.isComposing()) {
       this.emptyPhoneme();
-      removeIncompleteCallback(pointer);
+      removeIncompleteCallback(
+        this.#computeRemovePointerForCompositionEnd(ending),
+      );
+    } else if (this.#isEndingWithoutComposingCharacter(ending)) {
+      removeIncompleteCallback(
+        this.#computeRemovePointerForCompositionUpdate(),
+      );
     }
 
+    const insertPointer = this.#computeInsertPointer(ending);
     this.#executeCallbacks(
-      pointer,
+      insertPointer,
       ending,
       insertPhraseCallback,
       setNextCursorCallback,
     );
     this.reset();
+  }
+
+  #computeRemovePointerForCompositionEnd(ending) {
+    return (
+      this.#pointer.get() - 1 + ending === this.#getEndingWithWordAndPhoneme()
+    );
+  }
+
+  #computeRemovePointerForCompositionUpdate() {
+    return this.#pointer.get() - 1;
+  }
+
+  #computeInsertPointer(ending) {
+    return (
+      this.#pointer.get() - this.#isEndingWithoutComposingCharacter(ending)
+    );
   }
 
   #executeCallbacks(pointer, ending, ...callbacks) {
@@ -96,16 +117,11 @@ export class AutoCompletion {
     return this.#endingMap[this.#inputTracker.getPhoneme()];
   }
 
-  #computePointer(ending) {
+  #isEndingWithoutComposingCharacter(ending) {
     return (
-      this.#pointer.get() -
-      !this.#inputTracker.isComposing() +
-      this.#hasComposingCharacter(ending)
+      this.#inputTracker.isWordComposing() &&
+      ending === this.#getEndingWithWord()
     );
-  }
-
-  #hasComposingCharacter(ending) {
-    return ending === this.#getEndingWithWordAndPhoneme();
   }
 
   setEndingType(selected) {
