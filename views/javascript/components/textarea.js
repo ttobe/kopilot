@@ -6,7 +6,7 @@ import { CharChecker } from '../utils/charChecker.js';
 import { CharCounter } from '../utils/charCounter.js';
 import { KeyChecker } from '../utils/keyChecker.js';
 import { ScrollTracker } from '../utils/scrollTracker.js';
-import { BaseComponent } from './baseComponent.js';
+import { BaseComponent } from './base/baseComponent.js';
 
 export class Textarea extends BaseComponent {
   #output;

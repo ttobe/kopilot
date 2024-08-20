@@ -1,4 +1,4 @@
-import { BaseComponent } from './baseComponent.js';
+import { BaseComponent } from './base/baseComponent.js';
 
 export class RadioBtnGroup extends BaseComponent {
   #radioButtons;

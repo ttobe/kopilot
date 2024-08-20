@@ -1,4 +1,5 @@
 import { OutputPopup } from '../components/outputPopup.js';
+import { SPINNER } from '../constants/spinner.js';
 import { spellCheck } from '../spell/spellCheck.js';
 import { InputNumberChecker } from '../utils/inputNumberChecker.js';
 import { LongSentence } from './longSentence.js';
@@ -9,11 +10,7 @@ export async function showSuggestion(event, span) {
   const outputPopup = new OutputPopup('긴 문장을 분석 중입니다...', '', null);
   outputPopup.show();
   const outputContent = document.querySelector('#output-popup .content');
-  outputContent.innerHTML = `
-    <div class="spinner-wrap">
-      <div class="spinner">
-      </div>
-    </div>`;
+  outputContent.innerHTML = SPINNER;
   outputPopup.hideButton();
 
   const longSentence = LongSentence.getInstance();

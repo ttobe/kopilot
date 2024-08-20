@@ -1,7 +1,7 @@
 import { COPY_STYLE } from '../constants/copyStyle.js';
 import { STYLE } from '../constants/style.js';
 import { DomManager } from '../utils/domManager.js';
-import { BaseComponent } from './baseComponent.js';
+import { BaseComponent } from './base/baseComponent.js';
 
 export class Tooltip extends BaseComponent {
   anchor;

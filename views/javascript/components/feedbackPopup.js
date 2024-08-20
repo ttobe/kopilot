@@ -1,17 +1,13 @@
+import { FEEDBACK_SCORE } from '../constants/feedbackScore.js';
+import { SPINNER } from '../constants/spinner.js';
 import { fetchServer } from '../utils/fetchServer.js';
-import { BasePopup } from './basePopup.js';
+import { BasePopup } from './base/basePopup.js';
 import { RadioBtnGroup } from './radioBtnGroup.js';
 
 export class FeedbackPopup extends BasePopup {
   #radioBtnGroups;
   #feedbackContent;
 
-  #scoreFeedbackMap = {
-    A: '완벽해요!',
-    B: '훌륭해요!',
-    C: '잘했어요!',
-    D: '조금 더 노력해봐요!',
-  };
   constructor(holder, overlay) {
     super(holder, overlay);
 
@@ -21,38 +17,8 @@ export class FeedbackPopup extends BasePopup {
     this.#init();
   }
 
-  #init() {
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-    this.#feedbackContent = document.getElementById('feedback-content');
-
-    const buttons = this.holder.querySelectorAll('button');
-    buttons.forEach((btn) => {
-      if (btn.className === 'submit-btn') {
-        btn.addEventListener('click', this.handleSubmit);
-      } else {
-        btn.addEventListener('click', this.handleCancel);
-      }
-    });
-  }
-
-  async handleSubmit() {
-    const text = document.getElementById('textarea').value;
-    const selectedValues = { text };
-
-    this.#radioBtnGroups.forEach((group) => {
-      const btn = group.getSelectedBtn();
-      selectedValues[btn.name] = btn.value;
-    });
-    this.applyFeedback(selectedValues);
-  }
-
   async applyFeedback(selectedValues) {
-    this.#feedbackContent.innerHTML = `
-    <div class="spinner-wrap">
-      <div class="spinner">
-      </div>
-    </div>`;
+    this.#feedbackContent.innerHTML = SPINNER;
     this.hide(false);
 
     const url = `${window.kopilotConfig.API_BASE_URL}/clova/feedback`;
@@ -72,9 +38,20 @@ export class FeedbackPopup extends BasePopup {
     });
   }
 
+  async handleSubmit() {
+    const text = document.getElementById('textarea').value;
+    const selectedValues = { text };
+
+    this.#radioBtnGroups.forEach((group) => {
+      const btn = group.getSelectedBtn();
+      selectedValues[btn.name] = btn.value;
+    });
+    this.applyFeedback(selectedValues);
+  }
+
   #getKoreanScore(score) {
     if (score) {
-      return this.#scoreFeedbackMap[score[0]] || score;
+      return FEEDBACK_SCORE[score[0]] || score;
     }
     return score;
   }
@@ -91,7 +68,17 @@ export class FeedbackPopup extends BasePopup {
     return section;
   }
 
-  handleCancel() {
-    this.hide(false);
+  #init() {
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.#feedbackContent = document.getElementById('feedback-content');
+
+    const buttons = this.holder.querySelectorAll('button');
+    buttons.forEach((btn) => {
+      if (btn.className === 'submit-btn') {
+        btn.addEventListener('click', this.handleSubmit);
+      } else {
+        btn.addEventListener('click', () => this.hide(false));
+      }
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { BasePopup } from './basePopup.js';
+import { BasePopup } from './base/basePopup.js';
 
 export class AlertPopup extends BasePopup {
   timeout;
