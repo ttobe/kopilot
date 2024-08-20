@@ -5,6 +5,13 @@ on:
     branches:
       - main
       - dev
+    paths:
+      - 'src/**'
+      - 'views/**'
+      - '*docker*'
+      - 'Dockerfile'
+      - 'package*.json'
+      - 'tsconfig*.json'
 
 jobs:
   build-and-push:
