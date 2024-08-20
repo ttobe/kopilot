@@ -17,7 +17,13 @@
       </span>
     </div>
   </div>
-  <div id='feedback-content'></div>
+  <div style='position: relative; width: 100%; height: 100%; overflow: auto;'>
+    <div id='feedback-content'></div>
+    <div class='dim'>
+      <h3>이전 피드백 내용이에요!</h3>
+      <h4>새로운 피드백을 받고 싶다면 아래 버튼을 클릭해주세요</h4>
+    </div>
+  </div>
   {{> components/button-group
     size="medium"
     buttons='[{"type": "default", "id": "feedback-btn", "label": "피드백"}]'
