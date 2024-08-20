@@ -53,11 +53,10 @@ export class AutoCompletion {
       removeIncompleteCallback(
         this.#computeRemovePointerForCompositionEnd(ending),
       );
-    } else if (this.#isEndingWithoutComposingCharacter(ending)) {
-      removeIncompleteCallback(
-        this.#computeRemovePointerForCompositionUpdate(),
-      );
-    } else if (this.#isEndingWithoutLastCharacter(ending)) {
+    } else if (
+      this.#isEndingWithoutComposingCharacter(ending) ||
+      this.#isEndingWithoutLastCharacter(ending)
+    ) {
       removeIncompleteCallback(
         this.#computeRemovePointerForCompositionUpdate(),
       );
