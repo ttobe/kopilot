@@ -1,21 +1,12 @@
-import {
-  ClovaChatCompletionsRequestBody,
-  ClovaCompletionsRequestBody,
-} from '../types';
+import { ClovaChatCompletionsRequestBody } from '../types';
 
-export const SYNONYM_DETAILS: ClovaCompletionsRequestBody = {
-  text: '',
-  start:
-    '의 한국어 유의어 목록을 부연 설명 없이 유사도가 높은 순서대로 작성하면 1)',
-  restart: '',
-  includeTokens: true,
-  topP: 0.4,
+export const SYNONYM_DETAILS: ClovaChatCompletionsRequestBody = {
+  messages: [],
+  topP: 0.6,
   topK: 0,
-  maxTokens: 100,
-  temperature: 0.5,
-  repeatPenalty: 5.0,
-  stopBefore: ['6'],
-  includeAiFilters: true,
+  maxTokens: 50,
+  temperature: 0.1,
+  repeatPenalty: 2,
 };
 
 export const LONG_DESCRIPTION_DETAILS: ClovaChatCompletionsRequestBody = {

@@ -1,9 +1,12 @@
 import {
   ClovaChatCompletionsResponseBody,
-  ClovaCompletionsResponseBody,
   ClovaResponse,
+  Synonyms,
 } from '../types';
-import { Feedback } from '../types/feedback/feedback.type';
+
+const HYPHEN: string = '-';
+const LEFT_BRACE: string = '[';
+const BRACE_REGEXP: RegExp = /\[([^\]]+)\]/;
 
 export class ClovaResponseBodyTransformer {
   static transformIntoResult(
@@ -13,21 +16,19 @@ export class ClovaResponseBodyTransformer {
   }
 
   static transformIntoSynonymResult(
-    body: ClovaCompletionsResponseBody,
-  ): ClovaResponse {
-    const regex: RegExp = /[1-5]{1}\)\s([가-힣\s]+)/g;
-
-    return {
-      result: [...body.text.matchAll(regex)].reduce((acc, curr) => {
-        acc.push(curr[1].trim());
-        return acc;
-      }, []),
-    };
+    body: ClovaChatCompletionsResponseBody,
+  ): Synonyms {
+    const content = body.message.content;
+    try {
+      return JSON.parse(content);
+    } catch (err) {
+      return this.handleUnexpectedSynonymResult(content);
+    }
   }
 
-  static transformIntoFeedBackResult(
+  static transformIntoFeedbackResult(
     body: ClovaChatCompletionsResponseBody,
-  ): Feedback[] {
+  ): ClovaResponse {
     const sections = body.message.content.trim().split(/-\s+/);
     const result = sections
       .map((section) => {
@@ -50,5 +51,55 @@ export class ClovaResponseBodyTransformer {
       .filter((item) => item !== null);
 
     return result;
+  }
+
+  private static handleUnexpectedSynonymResult(content: string): Synonyms {
+    console.debug(content);
+    try {
+      if (content.includes(HYPHEN) && content.includes(LEFT_BRACE)) {
+        return this.parseSynonymResultWithHyphenAndBrace(content);
+      }
+      if (content.includes(HYPHEN)) {
+        return this.parseSynonymResultWithHyphen(content);
+      }
+      if (content.includes(LEFT_BRACE)) {
+        return this.parseSynonymResultWithoutQuotationMark(content);
+      }
+      throw Error(content);
+    } catch (err) {
+      throw Error(`Failed to parse synonyms:\n ${err.message}`);
+    }
+  }
+
+  private static parseSynonymResultWithHyphenAndBrace(
+    content: string,
+  ): string[] {
+    const match: RegExpMatchArray = content.match(BRACE_REGEXP);
+    if (match) {
+      try {
+        return JSON.parse(match[0].slice(1, -1));
+      } catch (err) {
+        return this.handleUnexpectedSynonymResult(match[0]);
+      }
+    }
+    throw Error(content);
+  }
+
+  private static parseSynonymResultWithHyphen(content: string): string[] {
+    return content
+      .trim()
+      .split(/(\n|,)/g)
+      .map((item) => item.trim().replace(/(- |,)/, ''))
+      .filter((item) => item);
+  }
+
+  private static parseSynonymResultWithoutQuotationMark(
+    content: string,
+  ): string[] {
+    return content
+      .replace(/(\[|\])/g, '')
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => item);
   }
 }

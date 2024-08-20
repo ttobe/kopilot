@@ -1,3 +1,3 @@
-export type ClovaResponse = {
-  result: string | string[];
-};
+import { Feedback } from './feedback';
+
+export type ClovaResponse = { result: string | string[] } | Feedback[];

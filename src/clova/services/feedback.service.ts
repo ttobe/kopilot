@@ -2,15 +2,16 @@ import { Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsRequestHeadersForHCX003,
   FEEDBACK_DETAILS,
-} from './constants';
+} from '../constants';
 import {
   ChatMessage,
   ChatRole,
   ClovaChatCompletionsRequestBody,
   ClovaRequestHeader,
-} from './types';
-import { Feedback } from './types/feedback/feedback.type';
-import { ClovaResponseBodyTransformer, axiosPost } from './utils';
+  ClovaResponse,
+} from '../types';
+import { Feedback } from '../types/feedback/feedback.type';
+import { ClovaResponseBodyTransformer, axiosPost } from '../utils';
 
 @Injectable()
 export class FeedbackService {
@@ -24,7 +25,7 @@ export class FeedbackService {
     tone: string,
     purpose: string,
     text: string,
-  ): Promise<Feedback[]> {
+  ): Promise<ClovaResponse> {
     return await this.requestChatCompletions(tone, purpose, text);
   }
 
@@ -32,7 +33,7 @@ export class FeedbackService {
     tone: string,
     purpose: string,
     text: string,
-  ): Promise<Feedback[]> {
+  ): Promise<ClovaResponse> {
     const chatMessages: ChatMessage[] = this.makeChatMessages(
       tone,
       purpose,
@@ -44,7 +45,7 @@ export class FeedbackService {
       this.chatCompletionsHeaders,
     );
 
-    return ClovaResponseBodyTransformer.transformIntoFeedBackResult(
+    return ClovaResponseBodyTransformer.transformIntoFeedbackResult(
       res.data.result,
     );
   }

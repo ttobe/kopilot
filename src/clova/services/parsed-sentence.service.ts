@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ClovaChatCompletionsRequestHeaders } from './constants';
+import { ClovaChatCompletionsRequestHeaders } from '../constants';
 import {
   ChatRole,
   ClovaChatCompletionsResponseBody,
   ClovaRequestHeader,
-} from './types';
-import { axiosPost } from './utils';
+} from '../types';
+import { axiosPost } from '../utils';
 
 @Injectable()
 export class ParsedSentenceService {
