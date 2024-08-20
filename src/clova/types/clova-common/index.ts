@@ -1,2 +1,2 @@
-export * from './clova-property.type';
-export * from './clova-request-header.type';
+export * from './property.type';
+export * from './request-header.type';
