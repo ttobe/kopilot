@@ -14,6 +14,8 @@ export const formalEndingMap = {
   배웠: '습니다.',
 
   었: '습니다.',
+  습: '니다.',
+  입: '니다.',
 };
 
 export const politeEndingMap = {
