@@ -29,11 +29,13 @@ export class ClovaResponseBodyTransformer {
   static transformIntoFeedbackResult(
     body: ClovaChatCompletionsResponseBody,
   ): ClovaResponse {
-    const sections = body.message.content.trim().split(/\n\n/);
+    const sections = body.message.content.trim().split(/-\s+/);
     const result = sections
       .map((section) => {
-        const [titleLine, ...descriptionLines] = section.split('\n');
-        const titleMatch = titleLine.match(/^-\s*(.*?)\s*:\s*(.*)$/);
+        const [titleLine, ...descriptionLines] = section.trim().split('\n');
+        if (!titleLine) return null;
+
+        const titleMatch = titleLine.match(/^(.*?)\s*:\s*(.*)$/);
         if (!titleMatch) return null;
 
         const title = titleMatch[1];

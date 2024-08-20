@@ -53,7 +53,7 @@ feedbackFloatingBtn.addEventListener('click', () => {
 });
 
 feedbackBtn.addEventListener('click', () => {
-  const text = document.getElementById('textarea').value;
+  const text = document.getElementById('textarea').value.trim();
   if (text.length > 3000) {
     alertPopup.pop('3000자 이상이면 피드백할 수 없습니다.');
   } else if (text.length < 300) {
