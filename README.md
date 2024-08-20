@@ -26,13 +26,13 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 > 사용자가 글을 편하고 빠르게 작성할 수 있도록 어미 자동 완성 기능을 제공합니다.
 
-![자동완성](https://github.com/user-attachments/assets/a7fb7fa5-543c-4d3e-90c7-2a7fb9af2864)
+![자동완성 확대](https://github.com/user-attachments/assets/61a6638d-f3e1-4784-b060-2d2eab1af0fd)
 
 ### 맞춤법 검사
 
 > 실시간으로 맞춤법과 문법을 검사합니다. 빨간색으로 하이라이팅 된 오류를 클릭하여 맞춤법을 교정할 수 있습니다.
 
-![맞춤법](https://github.com/user-attachments/assets/40ab605b-55e5-4d24-8151-608f00a2a69d)
+![맞춤법 확대](https://github.com/user-attachments/assets/998898dd-9301-4af3-9c5e-a97d5f522884)
 
 ### 긴 문장 탐지
 
@@ -44,7 +44,7 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 > 글의 일부분을 드래그하여 글을 부분적으로 수정할 수 있습니다.
 
-![소제목](https://github.com/user-attachments/assets/cdf5653b-e491-4239-96c8-00147ee80f24)
+![소제목 확대](https://github.com/user-attachments/assets/9df73c49-ad4c-4058-ba2d-1d0e70114eb9)
 
 ### 피드백 제공
 
