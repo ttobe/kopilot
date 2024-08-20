@@ -1,4 +1,4 @@
-import { ClovaStopReason } from '../clova-property.type';
+import { ClovaStopReason } from '../clova-common';
 import { ChatMessage } from './chat-message.type';
 
 // https://api.ncloud-docs.com/docs/clovastudio-chatcompletions
