@@ -521,6 +521,7 @@ div.white-space-pre-wrap {
   overflow: auto;
 
   flex-grow: 1;
+  font-family: var(--font-family—editor);
 }
 
 #overlay {
