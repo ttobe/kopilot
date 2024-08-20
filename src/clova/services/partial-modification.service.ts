@@ -34,6 +34,10 @@ export class PartialModificationService {
   constructor(
     @Inject(RedisManager)
     private readonly redisManager: RedisManager,
+    @Inject(ClovaRequestBodyTransformer)
+    private readonly clovaRequestBodyTransformer: ClovaRequestBodyTransformer,
+    @Inject(ClovaResponseBodyTransformer)
+    private readonly clovaResponseBodyTransformer: ClovaResponseBodyTransformer,
   ) {}
 
   async getResult(
@@ -68,7 +72,7 @@ export class PartialModificationService {
 
     const { data }: any = await axiosPost(
       `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
-      ClovaRequestBodyTransformer.transformIntoChatCompletions(
+      this.clovaRequestBodyTransformer.transformIntoChatCompletions(
         command,
         chatMessages,
       ),
@@ -76,7 +80,7 @@ export class PartialModificationService {
     );
 
     const synonyms: Synonyms =
-      ClovaResponseBodyTransformer.transformIntoSynonymResult(data.result);
+      this.clovaResponseBodyTransformer.transformIntoSynonymResult(data.result);
     if (synonyms.length) {
       this.redisManager.set(input, synonyms);
     }
@@ -96,7 +100,7 @@ export class PartialModificationService {
 
     return await fetchPost(
       `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
-      ClovaRequestBodyTransformer.transformIntoChatCompletions(
+      this.clovaRequestBodyTransformer.transformIntoChatCompletions(
         command,
         chatMessages,
       ),

@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import {
   DIRECT_COMMAND_DETAILS,
   LONG_DESCRIPTION_DETAILS,
@@ -13,8 +14,9 @@ import {
   CommandValue,
 } from '../types';
 
+@Injectable()
 export class ClovaRequestBodyTransformer {
-  static transformIntoChatCompletions(
+  transformIntoChatCompletions(
     command: CommandValue,
     chatMessages: ChatMessage[],
   ): ClovaChatCompletionsRequestBody {
@@ -34,37 +36,37 @@ export class ClovaRequestBodyTransformer {
     }
   }
 
-  private static makeSynonym(
+  private makeSynonym(
     messages: ChatMessage[],
   ): ClovaChatCompletionsRequestBody {
     return { ...SYNONYM_DETAILS, messages };
   }
 
-  private static makeLongDescription(
+  private makeLongDescription(
     messages: ChatMessage[],
   ): ClovaChatCompletionsRequestBody {
     return { ...LONG_DESCRIPTION_DETAILS, messages };
   }
 
-  private static makeShortDescription(
+  private makeShortDescription(
     messages: ChatMessage[],
   ): ClovaChatCompletionsRequestBody {
     return { ...SHORT_DESCRIPTION_DETAILS, messages };
   }
 
-  private static makeSubtitle(
+  private makeSubtitle(
     messages: ChatMessage[],
   ): ClovaChatCompletionsRequestBody {
     return { ...SUBTITLE_DETAILS, messages };
   }
 
-  private static makeDirectCommand(
+  private makeDirectCommand(
     messages: ChatMessage[],
   ): ClovaChatCompletionsRequestBody {
     return { ...DIRECT_COMMAND_DETAILS, messages };
   }
 
-  public static makeRepetitiveWordCommand(
+  public makeRepetitiveWordCommand(
     text: string,
   ): ClovaChatCompletionsRequestBody {
     const messages = [

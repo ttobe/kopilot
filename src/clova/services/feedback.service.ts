@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsRequestHeadersForHCX003,
   FEEDBACK_DETAILS,
@@ -19,6 +19,11 @@ export class FeedbackService {
     process.env.CHAT_COMPLETIONS_HCX003_ENDPOINT;
   private readonly chatCompletionsHeaders: ClovaRequestHeader =
     ClovaChatCompletionsRequestHeadersForHCX003;
+
+  constructor(
+    @Inject(ClovaResponseBodyTransformer)
+    private readonly clovaResponseBodyTransformer: ClovaResponseBodyTransformer,
+  ) {}
 
   async getResult(
     tone: string,
@@ -44,7 +49,7 @@ export class FeedbackService {
       this.chatCompletionsHeaders,
     );
 
-    return ClovaResponseBodyTransformer.transformIntoFeedbackResult(
+    return this.clovaResponseBodyTransformer.transformIntoFeedbackResult(
       res.data.result,
     );
   }
