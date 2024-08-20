@@ -50,7 +50,6 @@ export class AutoCompletion {
     }
 
     if (!this.#inputTracker.isComposing()) {
-      this.emptyPhoneme();
       removeIncompleteCallback(
         this.#computeRemovePointerForCompositionEnd(ending),
       );
