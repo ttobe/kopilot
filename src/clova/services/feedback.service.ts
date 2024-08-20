@@ -10,7 +10,6 @@ import {
   ClovaRequestHeader,
   ClovaResponse,
 } from '../types';
-import { Feedback } from '../types/feedback/feedback.type';
 import { ClovaResponseBodyTransformer, axiosPost } from '../utils';
 
 @Injectable()
