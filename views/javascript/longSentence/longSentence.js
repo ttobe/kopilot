@@ -53,7 +53,13 @@ export class LongSentence {
       JSON.stringify(data),
       'long sentence error',
     );
-    return await response.text();
+
+    const trimedSentence = sentence.replace(/^\s+|\s+$/g, '');
+    const parsedSentence = await response.text();
+    return sentence.replace(
+      new RegExp(`(\\s*)${trimedSentence}(\\s*)`),
+      `$1${parsedSentence}$2`,
+    );
   };
 
   changePage = (span, textarea, output) => {
@@ -80,7 +86,7 @@ export class LongSentence {
     this.resetCounter();
     if (sentences) {
       sentences.forEach((sentence) => {
-        if (sentence.length >= this.#length) {
+        if (sentence.length.trim() >= this.#length) {
           sentence = '<span class="highlight yellow">' + sentence + '</span>';
           this.#numOfLongSentence++;
         }
