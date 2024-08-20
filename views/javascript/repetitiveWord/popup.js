@@ -1,28 +1,22 @@
 import { OutputPopup } from '../components/outputPopup.js';
 import { RadioBtnGroup } from '../components/radioBtnGroup.js';
+import { SPINNER } from '../constants/spinner.js';
 
 export class RepetitiveWordPopup {
   #popup;
   #radioBtn;
-  #holder;
 
   constructor() {
     this.#popup = new OutputPopup();
-    this.#holder = this.#popup.holder.querySelector('.radio-btn-group');
+    this.#radioBtn = new RadioBtnGroup(
+      this.#popup.holder.querySelector('.radio-btn-group'),
+    );
   }
 
   showLoading(event, text) {
     event.stopPropagation(); // 이벤트 전파 막기
 
-    this.#popup.set(
-      text,
-      `
-    <div class="spinner-wrap">
-      <div class="spinner">
-      </div>
-    </div>`,
-      null,
-    );
+    this.#popup.set(text, SPINNER, null);
     this.hideRadioBtn();
     this.#popup.show();
   }
@@ -42,7 +36,6 @@ export class RepetitiveWordPopup {
   }
 
   showNewWord(data, func) {
-    this.#radioBtn = new RadioBtnGroup(this.#holder);
     this.#radioBtn.addButtons(data, 'repetitive');
 
     this.#popup.set('다음 단어로 바꿔보세요.', null, () => {
@@ -55,11 +48,11 @@ export class RepetitiveWordPopup {
 
   hideRadioBtn() {
     this.#popup.hideButton();
-    this.#holder.style.display = 'none';
+    this.#radioBtn.hide();
   }
 
   showRadioBtn() {
     this.#popup.showButton();
-    this.#holder.style.display = 'flex';
+    this.#radioBtn.show();
   }
 }
