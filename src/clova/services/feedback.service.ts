@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsRequestHeadersForHCX003,
   FEEDBACK_DETAILS,
@@ -21,7 +21,6 @@ export class FeedbackService {
     ClovaChatCompletionsRequestHeadersForHCX003;
 
   constructor(
-    @Inject(ClovaResponseBodyTransformer)
     private readonly clovaResponseBodyTransformer: ClovaResponseBodyTransformer,
   ) {}
 

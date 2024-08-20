@@ -33,7 +33,7 @@ export async function showSetting(event) {
 
   const outputPopup = new OutputPopup(
     '긴 문장 기준을 입력하세요.',
-    `<input id="length-input" type="number" min="40" max="300" style="width: 100%;" value=${longSentence.getLength()}>`,
+    `<input id="length-input" type="number" style="width: 100%;" value=${longSentence.getLength()}>`,
     () => {
       const input = document.getElementById('length-input');
       longSentence.setLength(input.value);

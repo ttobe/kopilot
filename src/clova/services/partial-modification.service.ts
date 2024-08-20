@@ -1,5 +1,5 @@
 import { RedisManager } from 'src/common/cache/redis/redis.manager';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsRequestHeadersForHCX003,
   ClovaChatCompletionsRequestHeadersForHCX003Stream,
@@ -32,11 +32,8 @@ export class PartialModificationService {
     ClovaChatCompletionsRequestHeadersForHCX003Stream;
 
   constructor(
-    @Inject(RedisManager)
     private readonly redisManager: RedisManager,
-    @Inject(ClovaRequestBodyTransformer)
     private readonly clovaRequestBodyTransformer: ClovaRequestBodyTransformer,
-    @Inject(ClovaResponseBodyTransformer)
     private readonly clovaResponseBodyTransformer: ClovaResponseBodyTransformer,
   ) {}
 
