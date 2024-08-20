@@ -33,7 +33,7 @@
   border-bottom: 0.1rem solid #eee;
   text-align: center;
   font-size: var(--font-size--small);
-  color: var(--border-color--dark);
+  color: var(--font-color--tertiary);
 }
 
 #version-list li:last-child {
@@ -48,5 +48,5 @@
 #cancel-button {
   width: 100%;
   text-align: right;
-  color: var(--border-color--dark);
+  color: var(--font-color--tertiary);
 }
