@@ -155,6 +155,10 @@ span.em {
   color: var(--primary-color);
 }
 
+div.white-space-pre-wrap {
+  white-space: pre-wrap;
+}
+
 .title {
   display: flex;
   align-items: center;
@@ -380,6 +384,10 @@ span.em {
 
 .radio-btn-group {
   display: flex;
+}
+
+.radio-btn-group.center {
+  justify-content: center;
 }
 
 .radio-btn-group label {

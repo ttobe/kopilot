@@ -74,7 +74,7 @@ export class EditorBox extends BaseComponent {
   }
 
   #isValidInput(text, command, length) {
-    return text.length >= length || command === DIRECT_COMMAND;
+    return text.trim().length >= length || command === DIRECT_COMMAND;
   }
 
   #showDirectCommandView() {
@@ -82,10 +82,9 @@ export class EditorBox extends BaseComponent {
     super.show();
 
     DomManager.showElement(this.#aiBtn);
-    DomManager.overrideClickEvent(this.#aiBtn, () => {
-      this.#inputBox.hide();
-      this.#request(true);
-    });
+    DomManager.overrideClickEvent(this.#aiBtn, () =>
+      this.#handleAiBtnClickEvent(),
+    );
   }
 
   async #request(stream) {
@@ -115,6 +114,19 @@ export class EditorBox extends BaseComponent {
       const { result } = await response.json();
       this.#handleApi(result);
     }
+  }
+
+  #isValidUserCommand() {
+    return this.#inputBox.getValue().trim().length > 0;
+  }
+
+  #handleAiBtnClickEvent() {
+    if (!this.#isValidUserCommand()) {
+      this.#alertPopup.pop('내용을 입력해주세요');
+      return;
+    }
+    this.#inputBox.hide();
+    this.#request(true);
   }
 
   #handleApi(result) {

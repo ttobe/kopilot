@@ -7,10 +7,13 @@
 
   font-size: var(--font-size--small);
 
-  border: var(--primary-color) var(--border-size--thin) solid;
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+
   border-radius: var(--border-radius--large);
 }
 
 .green-text {
   color: green;
+  font-weight: 600;
 }
