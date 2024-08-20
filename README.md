@@ -26,31 +26,31 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 > 사용자가 글을 편하고 빠르게 작성할 수 있도록 어미 자동 완성 기능을 제공합니다.
 
-TODO 이미지
+![자동완성](https://github.com/user-attachments/assets/a7fb7fa5-543c-4d3e-90c7-2a7fb9af2864)
 
 ### 맞춤법 검사
 
 > 실시간으로 맞춤법과 문법을 검사합니다. 빨간색으로 하이라이팅 된 오류를 클릭하여 맞춤법을 교정할 수 있습니다.
 
-TODO 이미지
+![맞춤법](https://github.com/user-attachments/assets/40ab605b-55e5-4d24-8151-608f00a2a69d)
 
 ### 긴 문장 탐지
 
 > 실시간으로 긴 문장을 감지하여 노란색으로 하이라이팅하고, AI를 통해 분리된 문장을 제공합니다. 긴 문장의 기준은 기본 100자입니다.
 
-TODO 이미지
+![긴문장](https://github.com/user-attachments/assets/abfb24f0-ab82-4917-b665-50b44732871f)
 
 ### 부분 수정
 
 > 글의 일부분을 드래그하여 글을 부분적으로 수정할 수 있습니다.
 
-TODO 이미지
+![소제목](https://github.com/user-attachments/assets/cdf5653b-e491-4239-96c8-00147ee80f24)
 
 ### 피드백 제공
 
 > 글의 구조와 내용을 개선할 수 있도록 돕습니다.
 
-TODO 이미지
+![피드백 사진](https://github.com/user-attachments/assets/c2237eae-8900-4856-9f21-c9f5c17d5ca6)
 
 <br>
 
