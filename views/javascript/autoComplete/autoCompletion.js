@@ -57,6 +57,10 @@ export class AutoCompletion {
       removeIncompleteCallback(
         this.#computeRemovePointerForCompositionUpdate(),
       );
+    } else if (this.#isEndingWithoutLastCharacter(ending)) {
+      removeIncompleteCallback(
+        this.#computeRemovePointerForCompositionUpdate(),
+      );
     }
 
     const insertPointer = this.#computeInsertPointer(ending);
@@ -71,7 +75,7 @@ export class AutoCompletion {
 
   #computeRemovePointerForCompositionEnd(ending) {
     return (
-      this.#pointer.get() - 1 + ending === this.#getEndingWithWordAndPhoneme()
+      this.#pointer.get() - 1 + ending == this.#getEndingWithWordAndPhoneme()
     );
   }
 
@@ -81,7 +85,9 @@ export class AutoCompletion {
 
   #computeInsertPointer(ending) {
     return (
-      this.#pointer.get() - this.#isEndingWithoutComposingCharacter(ending)
+      this.#pointer.get() -
+      (this.#isEndingWithoutComposingCharacter(ending) ||
+        this.#isEndingWithoutLastCharacter(ending))
     );
   }
 
@@ -120,6 +126,13 @@ export class AutoCompletion {
     return (
       this.#inputTracker.isWordComposing() &&
       ending === this.#getEndingWithWord()
+    );
+  }
+
+  #isEndingWithoutLastCharacter(ending) {
+    return (
+      this.#inputTracker.isWordComposing() &&
+      ending === this.#getEndingWithLastCharacter()
     );
   }
 
