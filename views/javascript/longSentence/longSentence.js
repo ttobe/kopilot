@@ -86,7 +86,7 @@ export class LongSentence {
     this.resetCounter();
     if (sentences) {
       sentences.forEach((sentence) => {
-        if (sentence.length.trim() >= this.#length) {
+        if (sentence.trim().length >= this.#length) {
           sentence = '<span class="highlight yellow">' + sentence + '</span>';
           this.#numOfLongSentence++;
         }
