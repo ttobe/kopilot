@@ -43,7 +43,15 @@ export class InputTracker {
     this.#word = '';
   }
 
+  isCharacterComposing() {
+    return this.getPhoneme() && !this.getWord();
+  }
+
+  isWordComposing() {
+    return this.getWord() && this.getPhoneme() !== this.getLastCharacter();
+  }
+
   isComposing() {
-    return this.getPhoneme() !== '' && this.getWord() === '';
+    return this.isCharacterComposing() || this.isWordComposing();
   }
 }
