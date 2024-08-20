@@ -55,7 +55,11 @@ export class LongSentence {
     );
 
     const trimedSentence = sentence.replace(/^\s+|\s+$/g, '');
-    const parsedSentence = await response.text();
+    const parsedSentence = (await response.text()).replace(
+      /(\s|\r?\n){2,}/g,
+      ' ',
+    );
+
     return sentence.replace(
       new RegExp(`(\\s*)${trimedSentence}(\\s*)`),
       `$1${parsedSentence}$2`,
