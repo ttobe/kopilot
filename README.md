@@ -1,16 +1,16 @@
-<div align="center">
-  <h1>Kopilot</h1>
-
-![메인 페이지](https://github.com/user-attachments/assets/e5c24c30-f8b2-4dad-a397-345ef29f70dc)
-
-</div>
-
-<p align=center>
-  <a href="https://kopilot.kro.kr/">배포 링크</a> 
+<div>
+  <h1 align="center">kopilot</h1>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <img src="https://github.com/user-attachments/assets/36af89d3-1881-4b00-b679-9b4b558aec60" alt="kopilot_logo" style="width: 33%; display: inline-block;">
+    <img src="https://github.com/user-attachments/assets/e5c24c30-f8b2-4dad-a397-345ef29f70dc" alt="kopilot_main_page" style="width: 65%; display: inline-block; float: right;">
+  </div>
+  <br>
+  <p align=center>
+  🔗 <a href="https://kopilot.kro.kr/">배포 링크</a> 
   &nbsp; | &nbsp; 
-  <a href="https://global-clementine-5a2.notion.site/kopilot-f7a29c83d76d4e3b9bcc8d99886a024b?pvs=4">팀 노션</a>
-  
-</p>
+  🗒️ <a href="https://global-clementine-5a2.notion.site/kopilot-f7a29c83d76d4e3b9bcc8d99886a024b?pvs=4">팀 노션</a>
+  </p>
+</div>
 
 <br>
 
@@ -22,50 +22,35 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 ## 주요 기능
 
-### 🤖 어미 자동 완성
+### 어미 자동 완성
 
-> 글을 편하고 빠르게 작성하도록 어미 자동 완성 기능을 제공합니다.
+> 사용자가 글을 편하고 빠르게 작성할 수 있도록 어미 자동 완성 기능을 제공합니다.
 
-gif로
+TODO 이미지
 
-예시문?
-했습니다, 되었습니다, 해보고 올리기
+### 맞춤법 검사
 
-### 🔎 맞춤법 검사
+> 실시간으로 맞춤법과 문법을 검사합니다. 빨간색으로 하이라이팅 된 오류를 클릭하여 맞춤법을 교정할 수 있습니다.
 
-> 글 작성 중 실시간으로 맞춤법과 문법을 검사합니다.  
-> 하이라이팅 빨간색으로 되고, 해당 부분을 클릭하면 수정할 수 있다는 설명 추가하기
+TODO 이미지
 
-치면서 빨간색 칠해지는거랑 반영하기 2개 다 할지  
-아니면 그냥 반영하기만 보여주기?
+### 긴 문장 탐지
 
-### 🔎 긴 문장 탐지
+> 실시간으로 긴 문장을 감지하여 노란색으로 하이라이팅하고, AI를 통해 분리된 문장을 제공합니다. 긴 문장의 기준은 기본 100자입니다.
 
-> 글 작성 중 실시간으로 긴 문장을 감지하고 분리된 문장을 제안합니다.  
-> 노란색으로 하이라이팅, 긴문장 100자, 수정할 수 있다는 설명
+TODO 이미지
 
-사진으로 스피너 돌아가는 게 길수도..?
+### 부분 수정
 
-크게 안길면 gif만들어보기
+> 글의 일부분을 드래그하여 글을 부분적으로 수정할 수 있습니다.
 
-### ✏️ 부분 수정
+TODO 이미지
 
-> 특정 문구를 선택하여 글을 부분적으로 수정할 수 있도록 돕습니다.
-
-gif로
-드래그, 명령 선택, stream
-
-### 🔁 피드백 제공
+### 피드백 제공
 
 > 글의 구조와 내용을 개선할 수 있도록 돕습니다.
 
-사진
-
-- `평가 항목`
-  - 내용 : 정확성, 연관성, 주제의 명료성, 전개의 적절성, 중복된 내용 여부
-  - 구성 : 적절성, 통일성, 일관성
-  - 표현 & 문법
-- `제약 조건` : 최소 300자 ~최대 3000자
+TODO 이미지
 
 <br>
 
@@ -78,55 +63,48 @@ gif로
 ## 스택
 
 <table>
-    <thead>
-        <tr>
-            <th>분류</th>
-            <th>기술 스택</th>
-        </tr>
-    </thead>
-    <tbody>
-            <td>
-                  <p>FE</p>
-            </td>
-            <td>
-                <img src="https://img.shields.io/badge/handlebars.js-000000?logo=handlebarsdotjs&logoColor=white">
-                <img src="https://img.shields.io/badge/Vanilla Javascript-F7DF1E?logo=javascript&logoColor=white">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p>BE</p>
-            </td>
-            <td>
-                <img src="https://img.shields.io/badge/Nest.js-E0234E?logo=NestJS&logoColor=white"/>
-                <img src="https://img.shields.io/badge/Typescript-3178C6?logo=Typescript&logoColor=white"/>
-            </td>
-        </tr>
-                <tr>
-            <td>
-                <p>DB</p>
-            </td>
-            <td>
-              <img src="https://img.shields.io/badge/redis-FF4438?logo=redis&logoColor=ffffff">
-            </td>
-        </tr>
+  <thead>
+    <tr>
+      <th>분류</th>
+      <th>기술 스택</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>Frontend</b></td>
+      <td>
+        <img src="https://img.shields.io/badge/handlebars-000000?logo=handlebarsdotjs&logoColor=white">
+        <img src="https://img.shields.io/badge/Vanilla Javascript-F7DF1E?logo=javascript&logoColor=white">
+      </td>
+    </tr>
+    <tr>
+      <td><b>Backend</b></td>
+      <td>
+        <img src="https://img.shields.io/badge/NestJS-%23E0234E.svg?style=flat&logo=nestjs&logoColor=white" />
+        <img src="https://img.shields.io/badge/Typescript-3178C6?logo=Typescript&logoColor=white"/>
+      </td>
+      </tr>
+      <tr>
+        <td><b>Database</b></td>
         <td>
-                  <p>AI</p>
-            </td>
-            <td>
-                  <img src="https://img.shields.io/badge/Clova-03C75A">
-            </td>
-                <tr>
-            <td>
-                <p>CI/CD</p>
-            </td>
-            <td>
-                <img src="https://img.shields.io/badge/Nginx-014532?logo=Nginx&logoColor=009639&">
-                <img src="https://img.shields.io/badge/Naver Cloud Platform-03C75A">
-                <img src="https://img.shields.io/badge/Docker-2496ED?&logo=Docker&logoColor=white">
-                <img src="https://img.shields.io/badge/GitHub Actions-000000?logo=github-actions">
-            </td>
-        </tr>
+          <img src="https://img.shields.io/badge/Redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white" />
+        </td>
+      </tr>
+      <tr>
+        <td><b>AI</b></td>
+        <td>
+          <img src="https://img.shields.io/badge/CLOVA Studio-00D25A">
+        </td>
+      </tr>
+      <tr>
+        <td><b>Deployment</b></td>
+        <td>
+          <img src="https://img.shields.io/badge/NGINX-%23009639.svg?style=flat&logo=nginx&logoColor=white" />
+          <img src="https://img.shields.io/badge/docker-1D63ED.svg?style=flat&logo=docker&logoColor=white" />
+          <img src="https://img.shields.io/badge/GitHub%20Actions-%232671E5.svg?style=flat&logo=githubactions&logoColor=white" />
+          <img src="https://img.shields.io/badge/NAVER Cloud Platform-00D25A">
+        </td>
+      </tr>
     </tbody>
 </table>
 
@@ -135,11 +113,28 @@ gif로
 ## 팀원 소개
 
 <div align="center">
-
-|                                 김유정                                 |                                 이승연                                 |                                 황진혁                                  |
-| :--------------------------------------------------------------------: | :--------------------------------------------------------------------: | :---------------------------------------------------------------------: |
-| <img src="https://avatars.githubusercontent.com/u/70785620?s=128&v=4"> | <img src="https://avatars.githubusercontent.com/u/49530253?s=128&v=4"> | <img src="https://avatars.githubusercontent.com/u/101859033?s=128&v=4"> |
-|                               **FE, BE**                               |                               **FE, BE**                               |                               **FE, BE**                                |
-|               [@kimyu0218](https://github.com/kimyu0218)               |                 [@tmddus2](https://github.com/tmddus2)                 |                  [@ttobe](https://github.com/ttobe-P)                   |
-
+<table>
+  <thead>
+    <th>김유정</th>
+    <th>이승연</th>
+    <th>황진혁</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="https://avatars.githubusercontent.com/u/70785620?s=128&v=4"></td>
+      <td><img src="https://avatars.githubusercontent.com/u/49530253?s=128&v=4"></td>
+      <td><img src="https://avatars.githubusercontent.com/u/101859033?s=128&v=4"></td>
+    </tr>
+    <tr>    
+      <td align="center"><a href="https://github.com/kimyu0218">@kimyu0218</a></td>
+      <td align="center"><a href="https://github.com/tmddus2">@tmddus2</a></td>
+      <td align="center"><a href="https://github.com/ttobe-P">@ttobe</a></td>
+    </tr>
+    <tr>
+      <td align="center">Frontend<br>Backend</td>
+      <td align="center">Frontend<br>Backend</td>
+      <td align="center">Frontend<br>Backend</td>
+    </tr>
+  </tbody>
+</table>
 </div>
