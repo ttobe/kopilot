@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   DIRECT_COMMAND_DETAILS,
   LONG_DESCRIPTION_DETAILS,
-  REPETITIVE_WORD_DETAIL,
+  REPETITIVE_WORD_DETAILS,
   SHORT_DESCRIPTION_DETAILS,
   SUBTITLE_DETAILS,
   SYNONYM_DETAILS,
@@ -80,6 +80,6 @@ export class ClovaRequestBodyTransformer {
         content: `${text}\n\n\n결과:`,
       },
     ];
-    return { ...REPETITIVE_WORD_DETAIL, messages };
+    return { ...REPETITIVE_WORD_DETAILS, messages };
   }
 }

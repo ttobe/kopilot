@@ -2,7 +2,7 @@ import { RedisManager } from 'src/common/cache/redis/redis.manager';
 import { Inject, Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsRequestHeadersForHCX003,
-  ClovaChatCompletionsRequestHeadersForStream,
+  ClovaChatCompletionsRequestHeadersForHCX003Stream,
   SystemMessage,
 } from '../constants';
 import {
@@ -29,7 +29,7 @@ export class PartialModificationService {
   private readonly chatCompletionsHeaders: ClovaRequestHeader =
     ClovaChatCompletionsRequestHeadersForHCX003;
   private readonly chatCompletionsHeadersForStream: ClovaRequestHeader =
-    ClovaChatCompletionsRequestHeadersForStream;
+    ClovaChatCompletionsRequestHeadersForHCX003Stream;
 
   constructor(
     @Inject(RedisManager)

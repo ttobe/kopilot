@@ -54,7 +54,7 @@ export const DIRECT_COMMAND_DETAILS: ClovaChatCompletionsRequestBody = {
   repeatPenalty: 2,
 };
 
-export const REPETITIVE_WORD_DETAIL: ClovaChatCompletionsRequestBody = {
+export const REPETITIVE_WORD_DETAILS: ClovaChatCompletionsRequestBody = {
   messages: [],
   topP: 0.6,
   topK: 0,

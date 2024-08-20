@@ -22,22 +22,16 @@ export const ClovaChatCompletionsRequestHeaders: ClovaRequestHeader = {
     process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS,
 };
 
-export const ClovaChatCompletionsRequestHeadersForStream: ClovaRequestHeader = {
-  ...ClovaRequestHeaders,
-  'X-NCP-CLOVASTUDIO-REQUEST-ID':
-    process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS,
-  Accept: ' text/event-stream',
-};
-
 export const ClovaChatCompletionsRequestHeadersForHCX003: ClovaRequestHeader = {
   ...ClovaRequestHeaders,
   'X-NCP-CLOVASTUDIO-REQUEST-ID':
     process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS_HCX003,
 };
 
-export const ClovaChatCompletionsRequestHeadersForRepetitiveWord: ClovaRequestHeader =
+export const ClovaChatCompletionsRequestHeadersForHCX003Stream: ClovaRequestHeader =
   {
     ...ClovaRequestHeaders,
     'X-NCP-CLOVASTUDIO-REQUEST-ID':
-      process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS,
+      process.env.X_NCP_CLOVASTUDIO_REQUEST_ID_FOR_CHAT_COMPLETIONS_HCX003,
+    Accept: ' text/event-stream',
   };

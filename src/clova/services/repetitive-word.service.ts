@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClovaChatCompletionsRequestHeadersForRepetitiveWord } from '../constants';
+import { ClovaChatCompletionsRequestHeaders } from '../constants';
 import { ClovaRequestHeader } from '../types';
 import { ClovaRequestBodyTransformer, axiosPost } from '../utils';
 
@@ -9,7 +9,7 @@ export class RepetitiveWordService {
     process.env.CLOVASTUDIO_API_BASE_URL +
     process.env.CHAT_COMPLETIONS_ENDPOINT;
   private readonly headers: ClovaRequestHeader =
-    ClovaChatCompletionsRequestHeadersForRepetitiveWord;
+    ClovaChatCompletionsRequestHeaders;
 
   constructor(
     @Inject(ClovaRequestBodyTransformer)
