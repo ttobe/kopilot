@@ -22,7 +22,7 @@ export class FeedbackService {
 
   constructor(
     @Inject(ClovaResponseBodyTransformer)
-    private readonly clovaResponseBodyTransformer,
+    private readonly clovaResponseBodyTransformer: ClovaResponseBodyTransformer,
   ) {}
 
   async getResult(

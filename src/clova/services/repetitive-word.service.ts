@@ -13,7 +13,7 @@ export class RepetitiveWordService {
 
   constructor(
     @Inject(ClovaRequestBodyTransformer)
-    private readonly clovaRequestBodyTransformer,
+    private readonly clovaRequestBodyTransformer: ClovaRequestBodyTransformer,
   ) {}
 
   public async getRepetitiveWord(text: string) {

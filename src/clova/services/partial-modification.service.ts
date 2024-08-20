@@ -35,9 +35,9 @@ export class PartialModificationService {
     @Inject(RedisManager)
     private readonly redisManager: RedisManager,
     @Inject(ClovaRequestBodyTransformer)
-    private readonly clovaRequestBodyTransformer,
+    private readonly clovaRequestBodyTransformer: ClovaRequestBodyTransformer,
     @Inject(ClovaResponseBodyTransformer)
-    private readonly clovaResponseBodyTransformer,
+    private readonly clovaResponseBodyTransformer: ClovaResponseBodyTransformer,
   ) {}
 
   async getResult(

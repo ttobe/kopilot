@@ -10,7 +10,7 @@ import { ClovaResponseBodyParser } from './response-body.parser';
 export class ClovaResponseBodyTransformer {
   constructor(
     @Inject(ClovaResponseBodyParser)
-    private readonly clovaResponseBodyParser,
+    private readonly clovaResponseBodyParser: ClovaResponseBodyParser,
   ) {}
 
   transformIntoResult(body: ClovaChatCompletionsResponseBody): ClovaResponse {
