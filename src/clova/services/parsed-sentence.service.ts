@@ -20,7 +20,7 @@ export class ParsedSentenceService {
       messages: [
         {
           role: ChatRole.SYSTEM,
-          content: `문장이 ${length}자가 넘는다면, 한 문장을 ${length}자 미만으로 나눠줘. 결과는 나뉜 문장만을 줄글로 보여줘.`,
+          content: `입력을 여러 문장으로 나눠줘. 각 문장이 ${length}자 미만이 되도록 나눠줘. 결과는 나뉜 문장만을 줄글로 보여줘.`,
         },
         {
           role: ChatRole.USER,
