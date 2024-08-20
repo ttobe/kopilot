@@ -50,7 +50,7 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 > 글의 구조와 내용을 개선할 수 있도록 돕습니다.
 
-![피드백 사진](https://github.com/user-attachments/assets/c2237eae-8900-4856-9f21-c9f5c17d5ca6)
+![피드백 사진](https://github.com/user-attachments/assets/855641af-270f-42f8-ab4d-9d1aaa4c1ca5)
 
 <br>
 
