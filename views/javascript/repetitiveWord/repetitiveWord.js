@@ -17,7 +17,7 @@ export class RepetitiveWord {
     this.#textarea = document.getElementById('textarea');
     this.#output = document.getElementById('output');
 
-    this.#btn.addEventListener('click', async () => {
+    this.#btn.addEventListener('click', () => {
       this.#mode = this.#btn.innerText;
       this.setRepetitiveBtnEvent(this.mode);
     });
@@ -94,7 +94,7 @@ export class RepetitiveWord {
     this.#output.innerHTML = content;
 
     this.#output.querySelectorAll('.highlight.green').forEach((element) => {
-      element.addEventListener('click', async (event) => {
+      element.addEventListener('click', (event) => {
         this.#clickedElement = event.target;
         const data = localStorage.getItem(event.target.innerText);
         this.#popup.showNewWord(JSON.parse(data), this.updateSelectedValue);
