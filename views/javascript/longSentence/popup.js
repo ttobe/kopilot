@@ -22,7 +22,6 @@ export async function showSuggestion(event, span) {
     textarea.value = output.innerText;
     spellCheck.performSpellCheck(); // 반영하기 클릭 시 다시 맞춤법 검사
     outputPopup.hide();
-    textarea.focus(); // 커서를 textarea로 이동
   });
   outputPopup.showButton();
 }
