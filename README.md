@@ -26,37 +26,50 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 > 사용자가 글을 편하고 빠르게 작성할 수 있도록 어미 자동 완성 기능을 제공합니다.
 
-![자동완성 확대](https://github.com/user-attachments/assets/4cb37206-5170-4811-9fe2-2c69b0156187)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/4cb37206-5170-4811-9fe2-2c69b0156187" width="70%" alt="자동완성">
+</div>
+
 
 ### 맞춤법 검사
 
 > 실시간으로 맞춤법과 문법을 검사합니다. 빨간색으로 하이라이팅 된 오류를 클릭하여 맞춤법을 교정할 수 있습니다.
 
-![맞춤법 확대](https://github.com/user-attachments/assets/998898dd-9301-4af3-9c5e-a97d5f522884)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/998898dd-9301-4af3-9c5e-a97d5f522884" width="70%" alt="맞춤법">
+</div>
 
 ### 긴 문장 탐지
 
 > 실시간으로 긴 문장을 감지하여 노란색으로 하이라이팅하고, AI를 통해 분리된 문장을 제공합니다. 긴 문장의 기준은 기본 100자입니다.
 
-![긴문장 확대](https://github.com/user-attachments/assets/3ab9ea60-81a2-4fc9-86a5-4c3141ce3c44)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/3ab9ea60-81a2-4fc9-86a5-4c3141ce3c44" width="70%" alt="긴문장">
+</div>
 
 ### 부분 수정
 
 > 글의 일부분을 드래그하여 글을 부분적으로 수정할 수 있습니다.
 
-![소제목 확대](https://github.com/user-attachments/assets/36da273d-aab5-49c7-8a6e-f23f53c23e02)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/36da273d-aab5-49c7-8a6e-f23f53c23e02" width="70%" alt="소제목">
+</div>
 
 ### 피드백 제공
 
 > 글의 구조와 내용을 개선할 수 있도록 돕습니다.
 
-![피드백 확대](https://github.com/user-attachments/assets/d51e3504-239e-4ce7-80f0-87601b57a85c)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/d51e3504-239e-4ce7-80f0-87601b57a85c" width="70%" alt="피드백">
+</div>
 
 ### 반복되는 단어 대체
 
 > 자주 사용된 단어를 찾고 대체할 수 있는 유의어를 제안합니다.
 
-![반복되는 단어 대체](https://github.com/user-attachments/assets/c32e6388-6d0d-4cf9-964d-34c709a52a0a)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/c32e6388-6d0d-4cf9-964d-34c709a52a0a" width="70%" alt="피드백">
+</div>
 
 <br>
 
@@ -66,7 +79,7 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 <br>
 
-## 스택
+## 기술 스택
 
 <table>
   <thead>
