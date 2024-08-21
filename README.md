@@ -38,7 +38,7 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 > 실시간으로 긴 문장을 감지하여 노란색으로 하이라이팅하고, AI를 통해 분리된 문장을 제공합니다. 긴 문장의 기준은 기본 100자입니다.
 
-![긴문장](https://github.com/user-attachments/assets/abfb24f0-ab82-4917-b665-50b44732871f)
+![긴문장 확대](https://github.com/user-attachments/assets/3ab9ea60-81a2-4fc9-86a5-4c3141ce3c44)
 
 ### 부분 수정
 
