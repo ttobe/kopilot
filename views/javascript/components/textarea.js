@@ -21,8 +21,9 @@ export class Textarea extends BaseComponent {
   #scrollTracker;
 
   #longSentence;
+  #repetitiveWord;
 
-  constructor(holder, autoCompletion, writingTool) {
+  constructor(holder, autoCompletion, writingTool, repetitiveWord) {
     super(holder);
 
     this.#output = document.getElementById('output');
@@ -35,6 +36,7 @@ export class Textarea extends BaseComponent {
     this.#scrollTracker = new ScrollTracker(holder);
 
     this.#longSentence = LongSentence.getInstance();
+    this.#repetitiveWord = repetitiveWord;
     this.#init();
   }
 
@@ -57,7 +59,7 @@ export class Textarea extends BaseComponent {
   handleInputEvent(event) {
     spellCheck.spellCheckOnContinuousInput();
     this.#output.innerHTML = this.holder.value;
-
+    this.#repetitiveWord.changeToRepetitiveMode();
     if (!event.isComposing && CharChecker.isIMECharacter(event.data)) {
       this.#removeLastCharacter();
       this.#restoreNextCursorPointer();

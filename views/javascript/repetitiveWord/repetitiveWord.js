@@ -9,6 +9,7 @@ export class RepetitiveWord {
   #output;
   #REPETITIVE_BTN_OPTION = '반복되는 단어';
   #APPLY_BTN_OPTION = '반영하기';
+  #mode;
 
   constructor() {
     this.#popup = new RepetitiveWordPopup();
@@ -16,15 +17,16 @@ export class RepetitiveWord {
     this.#textarea = document.getElementById('textarea');
     this.#output = document.getElementById('output');
 
-    this.#btn.addEventListener('click', async (event) =>
-      this.setRepetitiveBtnEvent(event, this.#btn.innerText),
-    );
+    this.#btn.addEventListener('click', () => {
+      this.#mode = this.#btn.innerText;
+      this.setRepetitiveBtnEvent(this.mode);
+    });
   }
 
-  setRepetitiveBtnEvent = async (event, mode) => {
+  setRepetitiveBtnEvent = async () => {
     const text = this.#textarea.value;
 
-    switch (mode) {
+    switch (this.#mode) {
       case this.#REPETITIVE_BTN_OPTION:
         if (text.length < 200) {
           this.#popup.denyPopup();
@@ -37,12 +39,12 @@ export class RepetitiveWord {
 
         await this.showWord(words);
 
-        this.#btn.innerText = this.#APPLY_BTN_OPTION;
+        this.changeMode(this.#APPLY_BTN_OPTION);
         break;
 
       case this.#APPLY_BTN_OPTION:
         this.#textarea.value = this.#output.innerText;
-        this.#btn.innerText = this.#REPETITIVE_BTN_OPTION;
+        this.changeMode(this.#REPETITIVE_BTN_OPTION);
     }
   };
 
@@ -80,10 +82,11 @@ export class RepetitiveWord {
       if (result.length > 0) {
         localStorage.setItem(data, JSON.stringify(result));
 
-        const regex = new RegExp(`(${data})`, 'g');
+        const cleanedData = data.replace(/[\(\)\[\]\{\}]/g, '');
+        const regex = new RegExp(`(${cleanedData})`, 'g');
         content = content.replace(
           regex,
-          `<span class="highlight green">${data}</span>`,
+          `<span class="highlight green">${cleanedData}</span>`,
         );
       }
     }
@@ -91,7 +94,7 @@ export class RepetitiveWord {
     this.#output.innerHTML = content;
 
     this.#output.querySelectorAll('.highlight.green').forEach((element) => {
-      element.addEventListener('click', async (event) => {
+      element.addEventListener('click', (event) => {
         this.#clickedElement = event.target;
         const data = localStorage.getItem(event.target.innerText);
         this.#popup.showNewWord(JSON.parse(data), this.updateSelectedValue);
@@ -115,5 +118,16 @@ export class RepetitiveWord {
       'partial modification error',
     );
     return await response.json();
+  };
+
+  changeToRepetitiveMode = () => {
+    if (this.#mode === this.#APPLY_BTN_OPTION) {
+      this.changeMode(this.#REPETITIVE_BTN_OPTION);
+    }
+  };
+
+  changeMode = (mode) => {
+    this.#btn.innerText = mode;
+    this.#mode = mode;
   };
 }
