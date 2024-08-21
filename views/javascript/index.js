@@ -1,8 +1,8 @@
 import { AutoCompletion } from './autoComplete/autoCompletion.js';
 import { AlertPopup } from './components/alertPopup.js';
-import { BaseSlide } from './components/baseSlide.js';
 import { CursorBox } from './components/cursorBox.js';
 import { FeedbackPopup } from './components/feedbackPopup.js';
+import { FeedbackSlide } from './components/feedbackSlide.js';
 import { Textarea } from './components/textarea.js';
 import { WritingTool } from './components/writingTool.js';
 import { showSetting } from './longSentence/popup.js';
@@ -35,7 +35,9 @@ endingChoice.addEventListener('change', (event) =>
 );
 
 const feedbackFloatingBtn = document.getElementById('feedback-floating-btn');
-const feedbackSlide = new BaseSlide(document.getElementById('feedback-slide'));
+const feedbackSlide = new FeedbackSlide(
+  document.getElementById('feedback-slide'),
+);
 const feedbackBtn = document.getElementById('feedback-btn');
 
 const overlay = document.getElementById('overlay');

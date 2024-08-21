@@ -1,4 +1,4 @@
-import { STYLE } from '../constants/style.js';
+import { STYLE } from '../../constants/style.js';
 
 export class BaseComponent {
   holder;

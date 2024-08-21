@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   ClovaChatCompletionsResponseBody,
   ClovaResponse,
@@ -9,7 +9,6 @@ import { ClovaResponseBodyParser } from './response-body.parser';
 @Injectable()
 export class ClovaResponseBodyTransformer {
   constructor(
-    @Inject(ClovaResponseBodyParser)
     private readonly clovaResponseBodyParser: ClovaResponseBodyParser,
   ) {}
 

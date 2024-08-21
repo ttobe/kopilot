@@ -55,7 +55,7 @@ export class AutoCompletion {
       );
     } else if (
       this.#isEndingWithoutComposingCharacter(ending) ||
-      this.#isEndingWithoutLastCharacter(ending)
+      this.#isEndingWithLastCharacter(ending)
     ) {
       removeIncompleteCallback(
         this.#computeRemovePointerForCompositionUpdate(),
@@ -86,7 +86,7 @@ export class AutoCompletion {
     return (
       this.#pointer.get() -
       (this.#isEndingWithoutComposingCharacter(ending) ||
-        this.#isEndingWithoutLastCharacter(ending))
+        this.#isEndingWithLastCharacter(ending))
     );
   }
 
@@ -128,7 +128,7 @@ export class AutoCompletion {
     );
   }
 
-  #isEndingWithoutLastCharacter(ending) {
+  #isEndingWithLastCharacter(ending) {
     return (
       this.#inputTracker.isWordComposing() &&
       ending === this.#getEndingWithLastCharacter()

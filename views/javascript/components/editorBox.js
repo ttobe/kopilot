@@ -2,8 +2,8 @@ import { DIRECT_COMMAND_GUIDE } from '../constants/editorBoxPrompt.js';
 import { DomManager } from '../utils/domManager.js';
 import { fetchServer } from '../utils/fetchServer.js';
 import { AlertPopup } from './alertPopup.js';
-import { BaseComponent } from './baseComponent.js';
-import { BaseInput } from './baseInput.js';
+import { BaseComponent } from './base/baseComponent.js';
+import { BaseInput } from './base/baseInput.js';
 import { RadioBtnGroup } from './radioBtnGroup.js';
 import { Spinner } from './spinner.js';
 

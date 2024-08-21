@@ -1,16 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common';
-import {
-  ClovaChatCompletionsRequestHeadersForHCX003,
-  FEEDBACK_DETAILS,
-} from '../constants';
+import { Injectable } from '@nestjs/common';
+import { ClovaChatCompletionsRequestHeadersForHCX003 } from '../constants';
 import {
   ChatMessage,
   ChatRole,
-  ClovaChatCompletionsRequestBody,
   ClovaRequestHeader,
   ClovaResponse,
 } from '../types';
-import { ClovaResponseBodyTransformer, axiosPost } from '../utils';
+import {
+  ClovaRequestBodyTransformer,
+  ClovaResponseBodyTransformer,
+  axiosPost,
+} from '../utils';
 
 @Injectable()
 export class FeedbackService {
@@ -21,7 +21,7 @@ export class FeedbackService {
     ClovaChatCompletionsRequestHeadersForHCX003;
 
   constructor(
-    @Inject(ClovaResponseBodyTransformer)
+    private readonly clovaRequestBodyTransformer: ClovaRequestBodyTransformer,
     private readonly clovaResponseBodyTransformer: ClovaResponseBodyTransformer,
   ) {}
 
@@ -38,19 +38,17 @@ export class FeedbackService {
     purpose: string,
     text: string,
   ): Promise<ClovaResponse> {
-    const chatMessages: ChatMessage[] = this.makeChatMessages(
-      tone,
-      purpose,
-      text,
-    );
-    const res: any = await axiosPost(
+    const { data }: any = await axiosPost(
       `${this.baseApiUrl}${this.chatCompletionsEndPoint}`,
-      this.makeChatCompletionsData(chatMessages),
+      this.clovaRequestBodyTransformer.transformIntoChatCompletions(
+        'FEEDBACK',
+        this.makeChatMessages(tone, purpose, text),
+      ),
       this.chatCompletionsHeaders,
     );
 
     return this.clovaResponseBodyTransformer.transformIntoFeedbackResult(
-      res.data.result,
+      data.result,
     );
   }
 
@@ -84,11 +82,5 @@ export class FeedbackService {
       },
       { role: ChatRole.USER, content: text },
     ];
-  }
-
-  private makeChatCompletionsData(
-    messages: ChatMessage[],
-  ): ClovaChatCompletionsRequestBody {
-    return { ...FEEDBACK_DETAILS, messages };
   }
 }
