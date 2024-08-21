@@ -27,7 +27,14 @@ const writingTool = new WritingTool(
 
 const autoCompletion = new AutoCompletion(cursorBox);
 
-const textarea = new Textarea(textareaHolder, autoCompletion, writingTool);
+const repetitiveWord = new RepetitiveWord();
+
+const textarea = new Textarea(
+  textareaHolder,
+  autoCompletion,
+  writingTool,
+  repetitiveWord,
+);
 
 const endingChoice = document.getElementById('ending-choice');
 endingChoice.addEventListener('change', (event) =>
@@ -77,5 +84,3 @@ output.addEventListener('scroll', () => {
   DomManager.syncElements(output, textareaHolder);
   DomManager.syncElements(output, highlightContainer);
 });
-
-const repetitiveWord = new RepetitiveWord();
