@@ -76,9 +76,12 @@ export class LongSentence {
   setLongSentenceEvent = () => {
     const tag = document.querySelectorAll('.highlight.yellow');
     tag.forEach((span) => {
-      span.addEventListener('click', (event) => {
-        showSuggestion(event, span);
-      });
+      if (!span.dataset.eventRegistered) {
+        span.addEventListener('click', async (event) => {
+          await showSuggestion(event, span);
+        });
+        span.dataset.eventRegistered = true;
+      }
     });
   };
 
@@ -99,7 +102,6 @@ export class LongSentence {
 
       this.#output.innerHTML = outputContent.replace(/\n/g, '<br>');
       this.#count.innerText = this.#numOfLongSentence;
-      this.setLongSentenceEvent();
     }
   };
 }
