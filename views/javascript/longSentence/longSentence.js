@@ -76,12 +76,9 @@ export class LongSentence {
   setLongSentenceEvent = () => {
     const tag = document.querySelectorAll('.highlight.yellow');
     tag.forEach((span) => {
-      if (!span.dataset.eventRegistered) {
-        span.addEventListener('click', (event) => {
-          showSuggestion(event, span);
-        });
-        span.dataset.eventRegistered = true;
-      }
+      span.addEventListener('click', (event) => {
+        showSuggestion(event, span);
+      });
     });
   };
 
