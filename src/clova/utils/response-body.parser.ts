@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 const HYPHEN: string = '-';
 const LEFT_BRACE: string = '[';
-const QUOTATION_MARK: RegExp = /("|')/;
+const QUOTATION_MARK: RegExp = /"/;
 const BRACE_REGEXP: RegExp = /\[([^\]]+)\]/;
 
 @Injectable()
@@ -20,7 +20,7 @@ export class ClovaResponseBodyParser {
       }
       throw Error(input);
     } catch (err) {
-      throw Error(`Failed to parse synonyms:\n ${err.message}`);
+      throw Error(`Failed to parse synonyms:\n${err.message}`);
     }
   }
 

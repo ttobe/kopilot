@@ -17,7 +17,7 @@ export class ClovaResponseBodyTransformer {
   }
 
   transformIntoSynonymResult(body: ClovaChatCompletionsResponseBody): Synonyms {
-    const content = body.message.content;
+    const content = body.message.content.trim().replaceAll("'", '');
     try {
       return JSON.parse(content);
     } catch (err) {
