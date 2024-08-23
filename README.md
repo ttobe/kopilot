@@ -75,7 +75,7 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 ## 아키텍처
 
-![architecture](https://github.com/user-attachments/assets/5aa00542-9ca5-4c2f-9dcb-9d9f5080365a)
+![kopilot_architecture](https://github.com/user-attachments/assets/04a426ce-28c2-4e65-ba56-b0a7cab23799)
 
 <br>
 
