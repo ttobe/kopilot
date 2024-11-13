@@ -129,31 +129,3 @@ Kopilot은 GitHub의 Copilot이 코드를 자동으로 완성하여 개발자의
 
 <br>
 
-## 팀원 소개
-
-<div align="center">
-<table>
-  <thead>
-    <th>김유정</th>
-    <th>이승연</th>
-    <th>황진혁</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td><img src="https://avatars.githubusercontent.com/u/70785620?s=128&v=4"></td>
-      <td><img src="https://avatars.githubusercontent.com/u/49530253?s=128&v=4"></td>
-      <td><img src="https://avatars.githubusercontent.com/u/101859033?s=128&v=4"></td>
-    </tr>
-    <tr>    
-      <td align="center"><a href="https://github.com/kimyu0218">@kimyu0218</a></td>
-      <td align="center"><a href="https://github.com/tmddus2">@tmddus2</a></td>
-      <td align="center"><a href="https://github.com/ttobe-P">@ttobe</a></td>
-    </tr>
-    <tr>
-      <td align="center">Frontend<br>Backend</td>
-      <td align="center">Frontend<br>Backend</td>
-      <td align="center">Frontend<br>Backend</td>
-    </tr>
-  </tbody>
-</table>
-</div>
